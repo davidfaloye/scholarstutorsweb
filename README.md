@@ -18,7 +18,7 @@ New → **Static Site** → connect this repo, then:
 
 Add your domain under Settings → Custom Domains.
 
-Only `public/` is served. The `backend-additions/` folder stays private; Those files belong in the `aitutor` backend.
+Only `public/` is served. The `backend-additions/` folder is not published; those files belong in the `aitutor` backend.
 
 ## 1. Backend (aitutor repo on Render)
 
