@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scholars&amp;Tutors</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Timed JAMB CBT practice, a diagnostic that finds your weak topics, and an explanation for every question you miss. Free for 8 days, then ₦2,000 a year.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: dark CBT-console identity. Hero pairs the promise with a working mock question; the rest of the page is calm bands leading to the activation form. */
+:root {
+  --bg: #0E0D1A;
+  --surface: #17152A;
+  --surface-2: #211E3B;
+  --line: #2E2A4F;
+  --fg: #EEEDF7;
+  --muted: #A3A0C2;
+  --accent: #6C63FF;
+  --accent-soft: rgba(108, 99, 255, 0.16);
+  --accent-ink: #FFFFFF;
+  --gold: #FFB547;
+  --gold-ink: #1C1300;
+  --gold-text: #FFB547;
+  --good: #3DD68C;
+  --good-soft: rgba(61, 214, 140, 0.14);
+  --bad: #FF6B6B;
+  --bad-soft: rgba(255, 107, 107, 0.14);
+  --shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7);
+  --display: "Syne", "Trebuchet MS", system-ui, sans-serif;
+  --body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius: 14px;
+  --max: 1140px;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F6F5FC; --surface: #FFFFFF; --surface-2: #EEECFA; --line: #DCD9F0;
+    --fg: #16142B; --muted: #5C5979; --accent: #5A51EE; --accent-soft: rgba(90, 81, 238, 0.10);
+    --accent-ink: #FFFFFF; --gold: #FFB547; --gold-ink: #1C1300; --gold-text: #9A5E00;
+    --good: #138A55; --good-soft: rgba(19, 138, 85, 0.10); --bad: #C93838; --bad-soft: rgba(201, 56, 56, 0.09);
+    --shadow: 0 30px 70px -35px rgba(40, 30, 120, 0.35);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F6F5FC; --surface: #FFFFFF; --surface-2: #EEECFA; --line: #DCD9F0;
+  --fg: #16142B; --muted: #5C5979; --accent: #5A51EE; --accent-soft: rgba(90, 81, 238, 0.10);
+  --accent-ink: #FFFFFF; --gold: #FFB547; --gold-ink: #1C1300; --gold-text: #9A5E00;
+  --good: #138A55; --good-soft: rgba(19, 138, 85, 0.10); --bad: #C93838; --bad-soft: rgba(201, 56, 56, 0.09);
+  --shadow: 0 30px 70px -35px rgba(40, 30, 120, 0.35);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--body); font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--bg);
+}
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+.wrap {
+  max-width: var(--max); margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.eyebrow {
+  font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--gold-text);
+}
+.muted { color: var(--muted); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 22px; border-radius: 12px; border: 1px solid transparent;
+  font: 700 15.5px/1 var(--body); text-decoration: none; cursor: pointer;
+  transition: transform .15s ease, background-color .15s ease, border-color .15s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-play { background: var(--gold); color: var(--gold-ink); }
+.btn-play small { display: block; font: 500 10.5px/1.2 var(--body); letter-spacing: 0.06em; text-transform: uppercase; opacity: .75; }
+.btn-play span { text-align: left; line-height: 1.15; }
+.btn-ghost { border-color: var(--line); color: var(--fg); background: transparent; }
+.btn-ghost:hover { border-color: var(--accent); }
+.btn-accent { background: var(--accent); color: var(--accent-ink); width: 100%; }
+.btn-accent:disabled { opacity: .6; cursor: progress; transform: none; }
+
+/* Header */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 66px; }
+.logo { font: 800 20px/1 var(--display); text-decoration: none; letter-spacing: -0.02em; white-space: nowrap; }
+.logo b { color: var(--gold); font-weight: 800; }
+.nav-links { display: flex; gap: 26px; font-size: 14.5px; font-weight: 500; }
+.nav-links a { text-decoration: none; color: var(--muted); }
+.nav-links a:hover { color: var(--fg); }
+.nav .btn { min-height: 42px; padding: 0 16px; font-size: 14px; }
+@media (max-width: 860px) { .nav-links { display: none; } }
+
+/* Payment return banner */
+.return { padding-block: 22px; }
+.return-card {
+  display: flex; gap: 18px; align-items: flex-start; padding: 20px 22px;
+  border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface);
+}
+.return-card[data-state="success"] { border-color: var(--good); background: var(--good-soft); }
+.return-card[data-state="failed"] { border-color: var(--bad); background: var(--bad-soft); }
+.return-dot { flex: none; width: 12px; height: 12px; margin-top: 8px; border-radius: 50%; background: var(--muted); }
+.return-card[data-state="success"] .return-dot { background: var(--good); }
+.return-card[data-state="failed"] .return-dot { background: var(--bad); }
+.return-card[data-state="checking"] .return-dot { animation: pulse 1s ease-in-out infinite; background: var(--accent); }
+.return-card h2 { font-size: 21px; margin-bottom: 4px; }
+@keyframes pulse { 50% { opacity: .3; } }
+
+/* Hero */
+.hero { padding-block: 64px 72px; position: relative; overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; inset: -20% -10% auto auto; width: 620px; height: 620px; max-width: 100%;
+  background: radial-gradient(closest-side, var(--accent-soft), transparent);
+  pointer-events: none;
+}
+.hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; position: relative; }
+.hero-copy { display: grid; gap: 22px; min-width: 0; }
+.hero h1 { font-size: clamp(40px, 6vw, 70px); font-weight: 800; }
+.hero h1 em { font-style: normal; color: var(--gold); }
+.lede { font-size: 18.5px; color: var(--muted); max-width: 34em; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.fine { font-size: 14px; color: var(--muted); }
+.fine strong { color: var(--fg); font-weight: 700; }
+@media (max-width: 920px) {
+  .hero { padding-block: 40px 56px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* CBT console */
+.cbt {
+  min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.cbt-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 14px 18px; background: var(--surface-2); border-bottom: 1px solid var(--line);
+}
+.cbt-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.cbt-tab {
+  font: 500 12.5px/1 var(--body); padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line);
+  background: transparent; color: var(--muted); cursor: pointer;
+}
+.cbt-tab[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.timer {
+  font: 500 15px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--gold-text);
+  display: flex; align-items: center; gap: 8px;
+}
+.timer::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); animation: pulse 2s ease-in-out infinite; }
+.cbt-body { padding: 22px 22px 18px; display: grid; gap: 16px; }
+.qmeta { font: 500 12.5px/1 var(--mono); color: var(--muted); letter-spacing: 0.04em; }
+.qtext { font-size: 18px; font-weight: 500; line-height: 1.5; }
+.qtext u { text-decoration-color: var(--gold); text-underline-offset: 4px; text-decoration-thickness: 2px; }
+.opts { display: grid; gap: 8px; }
+.opt {
+  display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: center; text-align: left;
+  width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--fg); font: 400 15.5px/1.4 var(--body); cursor: pointer;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt:disabled { cursor: default; }
+.opt-key {
+  display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px;
+  background: var(--surface-2); font: 500 13px/1 var(--mono);
+}
+.opt.is-right { border-color: var(--good); background: var(--good-soft); }
+.opt.is-right .opt-key { background: var(--good); color: var(--bg); }
+.opt.is-wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt.is-wrong .opt-key { background: var(--bad); color: var(--bg); }
+.pat {
+  border-radius: 12px; padding: 14px 16px; background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  font-size: 14.5px; display: grid; gap: 6px;
+}
+.pat-head { font: 700 13px/1 var(--body); color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.pat-head::before {
+  content: "P"; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px;
+  background: var(--accent); color: var(--accent-ink); font: 800 12px/1 var(--display);
+}
+.cbt-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 22px 18px; border-top: 1px solid var(--line);
+}
+.grid-nav { display: flex; gap: 4px; flex-wrap: wrap; min-width: 0; }
+.grid-nav i {
+  width: 18px; height: 18px; border-radius: 4px; background: var(--surface-2);
+  font: 500 9px/18px var(--mono); text-align: center; font-style: normal; color: var(--muted);
+}
+.grid-nav i.done { background: color-mix(in srgb, var(--accent) 55%, var(--surface-2)); color: var(--accent-ink); }
+.grid-nav i.now { background: var(--gold); color: var(--gold-ink); }
+.next {
+  flex: none; font: 700 14px/1 var(--body); padding: 11px 16px; border-radius: 10px;
+  border: none; background: var(--accent); color: var(--accent-ink); cursor: pointer;
+}
+.cbt-caption { margin-top: 12px; font-size: 13px; color: var(--muted); text-align: center; }
+
+/* Format strip */
+.format { border-block: 1px solid var(--line); background: var(--surface); }
+.format-grid { display: grid; grid-template-columns: auto repeat(4, 1fr); gap: 28px; align-items: center; padding-block: 30px; }
+.format-label { font-family: var(--display); font-weight: 700; font-size: 17px; max-width: 12em; line-height: 1.25; }
+.stat { display: grid; gap: 2px; }
+.stat b { font: 800 34px/1 var(--display); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13.5px; color: var(--muted); }
+@media (max-width: 860px) {
+  .format-grid { grid-template-columns: repeat(2, 1fr); }
+  .format-label { grid-column: 1 / -1; max-width: none; }
+}
+
+/* Sections */
+.section { padding-block: 96px; }
+.section-head { display: grid; gap: 14px; max-width: 640px; margin-bottom: 48px; }
+.section-head h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 800; }
+.section-head p { color: var(--muted); font-size: 17.5px; }
+@media (max-width: 640px) { .section { padding-block: 64px; } }
+
+/* Features */
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+.feat { background: var(--bg); padding: 30px 28px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.feat h3 { font-size: 21px; font-weight: 700; }
+.feat p { color: var(--muted); font-size: 15.5px; }
+.feat-tag { font: 500 11.5px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-text); }
+.feat.wide { grid-column: span 2; background: var(--surface); grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+.feat.wide > div { display: grid; gap: 10px; }
+.score {
+  display: grid; gap: 12px; padding: 20px; border-radius: 14px; background: var(--bg); border: 1px solid var(--line);
+}
+.score-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.score-top b { font: 800 44px/1 var(--display); font-variant-numeric: tabular-nums; }
+.score-top b small { font-size: 18px; color: var(--muted); font-weight: 600; }
+.bars { display: grid; gap: 9px; }
+.bar { display: grid; grid-template-columns: 96px 1fr 30px; gap: 10px; align-items: center; font-size: 13px; }
+.bar span:first-child { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; background: var(--accent); }
+.bar-fill.low { background: var(--gold); }
+.bar em { font: 500 12.5px/1 var(--mono); font-style: normal; text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 920px) {
+  .features { grid-template-columns: 1fr 1fr; }
+  .feat.wide { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .features { grid-template-columns: 1fr; }
+  .feat.wide { grid-column: auto; }
+}
+
+/* Steps */
+.steps-band { background: var(--surface); border-block: 1px solid var(--line); }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; counter-reset: step; list-style: none; margin: 0; padding: 0; }
+.steps li { display: grid; gap: 10px; align-content: start; position: relative; padding-top: 58px; }
+.steps li::before {
+  counter-increment: step; content: counter(step);
+  position: absolute; top: 0; left: 0; display: grid; place-items: center;
+  width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--accent);
+  font: 700 16px/1 var(--display); color: var(--accent);
+}
+.steps li::after {
+  content: ""; position: absolute; top: 20px; left: 52px; right: -16px; height: 1px; background: var(--line);
+}
+.steps li:last-child::after { display: none; }
+.steps li.key::before { background: var(--gold); border-color: var(--gold); color: var(--gold-ink); }
+.steps h3 { font-size: 19px; font-weight: 700; }
+.steps p { color: var(--muted); font-size: 15px; }
+@media (max-width: 860px) {
+  .steps { grid-template-columns: 1fr 1fr; row-gap: 40px; }
+  .steps li::after { display: none; }
+}
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+
+/* Pricing */
+.pricing-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 28px; align-items: start; }
+.plan {
+  border-radius: 20px; padding: 32px; background: var(--accent); color: var(--accent-ink);
+  display: grid; gap: 22px; position: relative; overflow: hidden;
+}
+.plan::after {
+  content: "₦"; position: absolute; right: -18px; bottom: -70px; font: 800 260px/1 var(--display);
+  opacity: 0.09; pointer-events: none;
+}
+.plan-price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.plan-price b { font: 800 64px/1 var(--display); letter-spacing: -0.02em; }
+.plan-price span { font-size: 17px; opacity: .85; }
+.plan ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: 15.5px; }
+.plan li { display: grid; grid-template-columns: 20px 1fr; gap: 10px; }
+.plan li::before { content: "✓"; font-weight: 700; color: var(--gold); }
+.plan-note { font-size: 14px; opacity: .85; border-top: 1px solid rgba(255,255,255,.25); padding-top: 16px; position: relative; z-index: 1; }
+.methods { display: flex; flex-wrap: wrap; gap: 8px; }
+.methods span {
+  font: 500 12.5px/1 var(--body); padding: 8px 11px; border-radius: 999px;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22);
+}
+.activate {
+  border-radius: 20px; padding: 32px; background: var(--surface); border: 1px solid var(--line);
+  display: grid; gap: 22px; min-width: 0;
+}
+.activate h3 { font-size: 26px; font-weight: 800; }
+.field { display: grid; gap: 7px; }
+.field label { font-weight: 700; font-size: 14.5px; }
+.field .hint { font-size: 13.5px; color: var(--muted); }
+.field input {
+  width: 100%; min-height: 50px; padding: 0 14px; border-radius: 11px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: 400 16px/1 var(--body);
+}
+.field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.field input[aria-invalid="true"] { border-color: var(--bad); }
+.check { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; cursor: pointer; }
+.check input { margin-top: 4px; accent-color: var(--accent); width: 17px; height: 17px; }
+.form-msg { font-size: 14.5px; padding: 12px 14px; border-radius: 10px; }
+.form-msg.err { background: var(--bad-soft); color: var(--fg); border: 1px solid var(--bad); }
+.form-msg.ok { background: var(--good-soft); border: 1px solid var(--good); }
+.secure { display: flex; gap: 8px; align-items: center; font-size: 13.5px; color: var(--muted); }
+@media (max-width: 860px) { .pricing-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .plan, .activate { padding: 24px 20px; } }
+
+/* Schools */
+.schools {
+  display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: center;
+  padding: 40px; border-radius: 20px; border: 1px dashed var(--gold); background: color-mix(in srgb, var(--gold) 6%, var(--bg));
+}
+.schools h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 800; margin-bottom: 12px; }
+.schools p { color: var(--muted); }
+.contact { display: grid; gap: 10px; }
+.contact-row {
+  display: flex; gap: 10px; align-items: center; justify-content: space-between;
+  padding: 12px 14px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line);
+  min-width: 0;
+}
+.contact-row code { font: 500 15px/1.3 var(--mono); user-select: all; overflow-wrap: anywhere; min-width: 0; }
+.copy {
+  flex: none; font: 700 13px/1 var(--body); padding: 9px 12px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--fg);
+}
+@media (max-width: 760px) { .schools { grid-template-columns: 1fr; padding: 28px 22px; } }
+
+/* FAQ */
+.faq { display: grid; gap: 10px; max-width: 820px; }
+.faq details { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.faq summary {
+  list-style: none; cursor: pointer; padding: 18px 20px; font-weight: 700; font-size: 16.5px;
+  display: flex; justify-content: space-between; gap: 16px; align-items: center;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font: 400 24px/1 var(--body); color: var(--accent); flex: none; transition: transform .2s ease; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding: 0 20px 20px; color: var(--muted); max-width: 64ch; }
+
+/* Final CTA + footer */
+.final { text-align: center; display: grid; gap: 20px; justify-items: center; }
+.final h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; max-width: 14em; }
+.foot { border-top: 1px solid var(--line); padding-block: 32px; font-size: 14px; color: var(--muted); }
+.foot-row { display: flex; flex-wrap: wrap; gap: 16px 28px; justify-content: space-between; align-items: center; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 20px; }
+.foot-links a { text-decoration: none; }
+.foot-links a:hover { color: var(--fg); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Scholars and Tutors home">Scholars<b>&amp;</b>Tutors</a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#schools">Schools</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-play" href="#pricing">Activate</a>
+  </div>
+</header>
+
+<section class="return" id="return" hidden aria-live="polite">
+  <div class="wrap">
+    <div class="return-card" id="return-card" data-state="checking">
+      <span class="return-dot" aria-hidden="true"></span>
+      <div>
+        <h2 id="return-title">Confirming your payment…</h2>
+        <p class="muted" id="return-text">This usually takes a few seconds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">UTME preparation for Android</p>
+        <h1>Practise for JAMB the way you'll <em>write</em> it.</h1>
+        <p class="lede">Timed CBT mock exams, a diagnostic that finds your weak topics, and a clear explanation for every question you miss. Built for Nigerian candidates.</p>
+        <div class="cta-row">
+          <a class="btn btn-play js-play" href="#" target="_blank" rel="noopener">
+            <svg width="22" height="24" viewBox="0 0 22 24" aria-hidden="true"><path d="M2 1.5 L20 12 L2 22.5 Z" fill="currentColor"/></svg>
+            <span><small>Get it on</small>Google Play</span>
+          </a>
+          <a class="btn btn-ghost" href="#pricing">Activate full access</a>
+        </div>
+        <p class="fine"><strong>Free for 8 days</strong> when you install. After that, ₦2,000 covers a full year.</p>
+      </div>
+
+      <div>
+        <div class="cbt" aria-label="Try a sample CBT question">
+          <div class="cbt-bar">
+            <div class="cbt-tabs" role="group" aria-label="Subject" id="cbt-tabs"></div>
+            <div class="timer" id="timer" aria-label="Time remaining">01:58:47</div>
+          </div>
+          <div class="cbt-body">
+            <p class="qmeta" id="qmeta">QUESTION 12 OF 180</p>
+            <p class="qtext" id="qtext"></p>
+            <div class="opts" id="opts"></div>
+            <div class="pat" id="pat" hidden>
+              <span class="pat-head">Ask PAT</span>
+              <p id="pat-text"></p>
+            </div>
+          </div>
+          <div class="cbt-foot">
+            <div class="grid-nav" id="grid-nav" aria-hidden="true"></div>
+            <button class="next" id="next" type="button">Next question</button>
+          </div>
+        </div>
+        <p class="cbt-caption">Try it. Pick an answer to see how PAT explains it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="format" aria-label="UTME format">
+    <div class="wrap format-grid">
+      <p class="format-label">Mock exams follow the real UTME format</p>
+      <div class="stat"><b>4</b><span>subjects, Use of English plus your three</span></div>
+      <div class="stat"><b>180</b><span>questions per sitting</span></div>
+      <div class="stat"><b>2 hrs</b><span>on the clock, like the CBT centre</span></div>
+      <div class="stat"><b>400</b><span>marks, scored the JAMB way</span></div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What's in the app</p>
+        <h2>Everything you need between now and exam day.</h2>
+        <p>Practice tells you where you stand. Explanations tell you why. The weekly report tells you what to study next.</p>
+      </div>
+
+      <div class="features">
+        <article class="feat wide">
+          <div>
+            <span class="feat-tag">CBT simulator</span>
+            <h3>Full mock exams under real exam conditions.</h3>
+            <p>Same subject mix, same question count, same countdown. When time runs out you get a score out of 400 and a breakdown by subject, so exam day feels familiar.</p>
+          </div>
+          <div class="score" aria-label="Example mock exam result">
+            <div class="score-top">
+              <span class="muted">Example mock result</span>
+              <b>268<small>/400</small></b>
+            </div>
+            <div class="bars">
+              <div class="bar"><span>Use of English</span><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div><em>78</em></div>
+              <div class="bar"><span>Mathematics</span><div class="bar-track"><div class="bar-fill low" style="width:52%"></div></div><em>52</em></div>
+              <div class="bar"><span>Physics</span><div class="bar-track"><div class="bar-fill" style="width:71%"></div></div><em>71</em></div>
+              <div class="bar"><span>Chemistry</span><div class="bar-track"><div class="bar-fill" style="width:67%"></div></div><em>67</em></div>
+            </div>
+          </div>
+        </article>
+        <article class="feat">
+          <span class="feat-tag">Diagnostic</span>
+          <h3>Find your weak topics first.</h3>
+          <p>One sitting maps what you know across your subjects. Stop halfway and pick up later, or skip it and start practising straight away.</p>
+        </article>
+        <article class="feat">
+          <span class="feat-tag">Ask PAT</span>
+          <h3>An explanation for every miss.</h3>
+          <p>Every question in the bank comes with a worked explanation. Get one wrong and PAT walks you through the correct answer step by step.</p>
+        </article>
+        <article class="feat">
+          <span class="feat-tag">Weekly coach</span>
+          <h3>A report on what changed.</h3>
+          <p>Each week you get a short report: what improved, what slipped, and which topics to focus on next.</p>
+        </article>
+        <article class="feat">
+          <span class="feat-tag">Study plan</span>
+          <h3>Sessions that remind you.</h3>
+          <p>Schedule study sessions for each subject. The app reminds you 30 minutes before each one starts.</p>
+        </article>
+        <article class="feat">
+          <span class="feat-tag">Learn</span>
+          <h3>Video lessons by topic.</h3>
+          <p>Short lessons picked for each topic in your subjects, for when you need the concept taught again from the start.</p>
+        </article>
+        <article class="feat">
+          <span class="feat-tag">Practice</span>
+          <h3>Drill one topic at a time.</h3>
+          <p>Filter questions by subject, topic and accuracy, and keep going until a weak area becomes a strong one.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section steps-band" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>Start free. Activate when you're ready.</h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <h3>Install the app</h3>
+          <p>Download Scholars&amp;Tutors from Google Play and sign up with your email or phone number.</p>
+        </li>
+        <li>
+          <h3>Use it free for 8 days</h3>
+          <p>Every feature is open during your trial. Take the diagnostic, sit a mock, try PAT.</p>
+        </li>
+        <li class="key">
+          <h3>Activate on this website</h3>
+          <p>Pay ₦2,000 below by transfer, card, USSD or OPay, using the email or phone you signed up with.</p>
+        </li>
+        <li>
+          <h3>Keep studying</h3>
+          <p>Your account unlocks automatically. Open the app and everything is there for a full year.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Pricing</p>
+        <h2>One price. A full year.</h2>
+        <p>Pay once and keep access through your exam and beyond. Parents and guardians can pay on a student's behalf.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="plan">
+          <div>
+            <p style="font-weight:700; font-size:15px; opacity:.9; margin-bottom:10px;">Full access</p>
+            <div class="plan-price"><b>₦2,000</b><span>per year</span></div>
+          </div>
+          <ul>
+            <li>Unlimited CBT mock exams in the UTME format</li>
+            <li>Full question bank with an explanation for every question</li>
+            <li>Ask PAT on every question you get wrong</li>
+            <li>Weekly coach report and study plan reminders</li>
+            <li>Video lessons for every supported subject</li>
+          </ul>
+          <div class="methods" aria-label="Accepted payment methods">
+            <span>Bank transfer</span><span>Card</span><span>USSD</span><span>Bank account</span><span>OPay</span>
+          </div>
+          <p class="plan-note">One payment, no automatic renewal. If you activate before your current year ends, the new year is added on top.</p>
+        </div>
+
+        <form class="activate" id="activate-form" novalidate>
+          <div>
+            <h3>Activate an account</h3>
+            <p class="muted" style="margin-top:6px;">Install the app and sign up first, then pay here.</p>
+          </div>
+
+          <div class="field">
+            <label for="student-id">Student's email or phone number</label>
+            <input id="student-id" name="identifier" type="text" inputmode="email" autocomplete="username" placeholder="e.g. ada@gmail.com or 0803 123 4567" required>
+            <span class="hint">Use exactly what the student signed up with in the app.</span>
+          </div>
+
+          <label class="check" for="for-someone">
+            <input id="for-someone" type="checkbox">
+            <span>I'm paying for someone else (parent, guardian, sponsor)</span>
+          </label>
+
+          <div class="field" id="payer-field" hidden>
+            <label for="payer-email">Your email for the receipt</label>
+            <input id="payer-email" name="payerEmail" type="email" autocomplete="email" placeholder="you@example.com">
+            <span class="hint">The receipt goes here. The student's account still gets the access.</span>
+          </div>
+
+          <div class="form-msg" id="form-msg" role="alert" hidden></div>
+
+          <button class="btn btn-accent" id="pay-btn" type="submit">Pay ₦2,000 securely</button>
+          <p class="secure">
+            <svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><rect x="1" y="7" width="12" height="8" rx="2" fill="currentColor"/><path d="M4 7V5a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+            Payment is handled by Paystack. The account unlocks automatically, usually within a minute.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="schools" style="padding-top:0;">
+    <div class="wrap">
+      <div class="schools">
+        <div>
+          <p class="eyebrow" style="margin-bottom:10px;">Schools, tutorial centres and sponsors</p>
+          <h2>Getting access for a whole class?</h2>
+          <p>We activate groups in one go: a secondary school's SS3 set, a tutorial centre's intake, or students sponsored by a church, company or government programme. Send us the number of students and we'll reply with group pricing and a simple sign-up process.</p>
+        </div>
+        <div class="contact">
+          <div class="contact-row">
+            <code id="email-text">jamb@euritechnologies.com</code>
+            <button class="copy" type="button" data-copy="email-text">Copy</button>
+          </div>
+          <p class="muted" style="font-size:13.5px;">Include your school or organisation name and your state.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section steps-band" id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2>Before you pay</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Do I need to install the app before paying?</summary>
+          <p>Yes. Payment activates an existing account, so the student needs to download the app and sign up first. Then enter the same email or phone number on this page.</p>
+        </details>
+        <details>
+          <summary>I've paid. How do I unlock the app?</summary>
+          <p>You don't need a code. Close and reopen the app, or log out and back in, and full access will be there. It usually takes under a minute after payment.</p>
+        </details>
+        <details>
+          <summary>My payment went through but the app is still locked.</summary>
+          <p>Check that you paid with the exact email or phone number the student signed up with. If it still hasn't unlocked after 10 minutes, email jamb@euritechnologies.com with your Paystack receipt and we'll sort it out.</p>
+        </details>
+        <details>
+          <summary>Will I be charged again automatically?</summary>
+          <p>No. ₦2,000 is a one-off payment for 12 months. Nothing renews unless you choose to activate again.</p>
+        </details>
+        <details>
+          <summary>Can a parent or sponsor pay for me?</summary>
+          <p>Yes. Tick "I'm paying for someone else", enter the student's email or phone number, and the payer's email for the receipt. Anyone can pay from anywhere.</p>
+        </details>
+        <details>
+          <summary>Which payment methods can I use?</summary>
+          <p>Bank transfer, debit card, USSD, direct bank payment and OPay. You don't need a card: transfer and USSD work from any Nigerian bank account.</p>
+        </details>
+        <details>
+          <summary>Which subjects are covered?</summary>
+          <p>Use of English and the most common UTME subject combinations. More subjects are being added; the app shows the full list when you choose your subjects at sign-up.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap final">
+      <p class="eyebrow">Your 8 days start when you sign up</p>
+      <h2>Sit your first mock exam today.</h2>
+      <div class="cta-row" style="justify-content:center;">
+        <a class="btn btn-play js-play" href="#" target="_blank" rel="noopener">
+          <svg width="22" height="24" viewBox="0 0 22 24" aria-hidden="true"><path d="M2 1.5 L20 12 L2 22.5 Z" fill="currentColor"/></svg>
+          <span><small>Get it on</small>Google Play</span>
+        </a>
+        <a class="btn btn-ghost" href="#pricing">Activate full access</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-row">
+    <p>© <span id="year">2026</span> Euri Technologies, Abuja. Scholars&amp;Tutors is not affiliated with JAMB.</p>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="/terms">Terms</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ---- Configuration: edit these for the live site ----
+  var CONFIG = {
+    API_BASE: "https://api.euritechnologies.com",
+    // Replace with the app's Play Store listing once published, e.g.
+    // https://play.google.com/store/apps/details?id=com.euritechnologies.scholarstutors
+    PLAY_URL: "https://play.google.com/store/search?q=Scholars%26Tutors&c=apps",
+    PRICE_NAIRA: 2000
+  };
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+  document.querySelectorAll(".js-play").forEach(function (a) { a.href = CONFIG.PLAY_URL; });
+
+  // ---- Sample CBT console ----
+  var QUESTIONS = [
+    {
+      subject: "Mathematics", no: 12,
+      text: "If log<sub>10</sub>2 = 0.3010, find the value of log<sub>10</sub>8.",
+      options: ["0.6020", "0.9030", "2.4080", "0.0903"], answer: 1,
+      explain: "8 is 2³, so log 8 = 3 × log 2 = 3 × 0.3010 = 0.9030. Option C multiplies by 8 instead of 3; the power, not the number, is what you multiply by."
+    },
+    {
+      subject: "English", no: 37,
+      text: "Choose the option nearest in meaning to the underlined word: The manager's reply was <u>terse</u>.",
+      options: ["brief", "rude", "lengthy", "cheerful"], answer: 0,
+      explain: "Terse means using very few words. A terse reply can sound rude, which is why B is tempting, but the word itself describes length, not tone."
+    },
+    {
+      subject: "Physics", no: 104,
+      text: "A car starts from rest and accelerates uniformly to 20 m/s in 5 s. What is its acceleration?",
+      options: ["4 m/s²", "100 m/s²", "0.25 m/s²", "15 m/s²"], answer: 0,
+      explain: "Acceleration = change in velocity ÷ time = (20 − 0) ÷ 5 = 4 m/s². Option B multiplies instead of dividing, a common slip under time pressure."
+    },
+    {
+      subject: "Biology", no: 151,
+      text: "Which organelle is the main site of aerobic respiration in a cell?",
+      options: ["Ribosome", "Chloroplast", "Mitochondrion", "Golgi body"], answer: 2,
+      explain: "Aerobic respiration releases energy in the mitochondrion. Chloroplasts carry out photosynthesis, which is easy to mix up because both involve energy."
+    }
+  ];
+  var current = 0;
+  var tabs = document.getElementById("cbt-tabs");
+  var qmeta = document.getElementById("qmeta");
+  var qtext = document.getElementById("qtext");
+  var opts = document.getElementById("opts");
+  var pat = document.getElementById("pat");
+  var patText = document.getElementById("pat-text");
+  var gridNav = document.getElementById("grid-nav");
+  var answered = {};
+
+  QUESTIONS.forEach(function (q, i) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "cbt-tab"; b.textContent = q.subject;
+    b.addEventListener("click", function () { show(i); });
+    tabs.appendChild(b);
+  });
+
+  function renderGrid(q) {
+    gridNav.innerHTML = "";
+    var start = Math.max(1, q.no - 9);
+    for (var n = start; n < start + 14; n++) {
+      var cell = document.createElement("i");
+      cell.textContent = n;
+      if (n === q.no) cell.className = "now";
+      else if (n < q.no) cell.className = "done";
+      gridNav.appendChild(cell);
+    }
+  }
+
+  function show(i) {
+    current = i;
+    var q = QUESTIONS[i];
+    Array.prototype.forEach.call(tabs.children, function (t, j) { t.setAttribute("aria-pressed", String(j === i)); });
+    qmeta.textContent = q.subject.toUpperCase() + " · QUESTION " + q.no + " OF 180";
+    qtext.innerHTML = q.text;
+    opts.innerHTML = "";
+    pat.hidden = true;
+    q.options.forEach(function (o, k) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "opt";
+      b.innerHTML = '<span class="opt-key">' + "ABCD"[k] + "</span><span></span>";
+      b.lastChild.textContent = o;
+      b.addEventListener("click", function () { choose(k); });
+      opts.appendChild(b);
+    });
+    renderGrid(q);
+    if (answered[i] !== undefined) choose(answered[i]);
+  }
+
+  function choose(k) {
+    var q = QUESTIONS[current];
+    answered[current] = k;
+    Array.prototype.forEach.call(opts.children, function (b, j) {
+      b.disabled = true;
+      if (j === q.answer) b.classList.add("is-right");
+      else if (j === k) b.classList.add("is-wrong");
+    });
+    patText.textContent = (k === q.answer ? "Correct. " : "Not quite. The answer is " + "ABCD"[q.answer] + ". ") + q.explain;
+    pat.hidden = false;
+  }
+
+  document.getElementById("next").addEventListener("click", function () { show((current + 1) % QUESTIONS.length); });
+  show(0);
+
+  // Countdown in CBT style
+  var remaining = 1 * 3600 + 58 * 60 + 47;
+  var timer = document.getElementById("timer");
+  setInterval(function () {
+    remaining = remaining > 0 ? remaining - 1 : 7200;
+    var h = Math.floor(remaining / 3600), m = Math.floor(remaining % 3600 / 60), s = remaining % 60;
+    timer.textContent = [h, m, s].map(function (n) { return String(n).padStart(2, "0"); }).join(":");
+  }, 1000);
+
+  // ---- Copy buttons ----
+  document.querySelectorAll("[data-copy]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var el = document.getElementById(btn.getAttribute("data-copy"));
+      var text = el.textContent.trim();
+      var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1600); };
+      var fallback = function () {
+        var r = document.createRange(); r.selectNodeContents(el);
+        var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        btn.textContent = "Selected";
+        setTimeout(function () { btn.textContent = "Copy"; }, 1600);
+      };
+      try {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } catch (e) { fallback(); }
+    });
+  });
+
+  // ---- Activation form ----
+  var form = document.getElementById("activate-form");
+  var idInput = document.getElementById("student-id");
+  var forSomeone = document.getElementById("for-someone");
+  var payerField = document.getElementById("payer-field");
+  var payerInput = document.getElementById("payer-email");
+  var msg = document.getElementById("form-msg");
+  var payBtn = document.getElementById("pay-btn");
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  forSomeone.addEventListener("change", function () { payerField.hidden = !forSomeone.checked; });
+
+  function looksLikePhone(v) {
+    var d = v.replace(/\D/g, "");
+    return d.length === 11 || (d.length === 13 && d.indexOf("234") === 0) || d.length === 10;
+  }
+  function showMsg(kind, text) {
+    msg.hidden = false; msg.className = "form-msg " + kind; msg.textContent = text;
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    msg.hidden = true;
+    idInput.removeAttribute("aria-invalid"); payerInput.removeAttribute("aria-invalid");
+
+    var identifier = idInput.value.trim();
+    var isEmail = EMAIL_RE.test(identifier);
+    if (!identifier || (!isEmail && !looksLikePhone(identifier))) {
+      idInput.setAttribute("aria-invalid", "true"); idInput.focus();
+      showMsg("err", "Enter the email address or 11-digit phone number the student signed up with.");
+      return;
+    }
+    var payerEmail = forSomeone.checked ? payerInput.value.trim() : (isEmail ? identifier : "");
+    if (forSomeone.checked && !EMAIL_RE.test(payerEmail)) {
+      payerInput.setAttribute("aria-invalid", "true"); payerInput.focus();
+      showMsg("err", "Enter a valid email address for the receipt.");
+      return;
+    }
+
+    payBtn.disabled = true; payBtn.textContent = "Opening secure checkout…";
+    fetch(CONFIG.API_BASE + "/api/payments/initialize", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ identifier: identifier, payerEmail: payerEmail || undefined })
+    })
+      .then(function (r) { return r.json().then(function (body) { return { ok: r.ok, body: body }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.body.authorizationUrl) throw new Error(res.body.message || "We couldn't start the payment. Please try again.");
+        showMsg("ok", "Found " + res.body.studentName + "'s account. Taking you to Paystack…");
+        window.location.href = res.body.authorizationUrl;
+      })
+      .catch(function (err) {
+        var text = err instanceof TypeError
+          ? "We couldn't reach the payment server. Check your internet connection and try again."
+          : err.message;
+        showMsg("err", text);
+        payBtn.disabled = false; payBtn.textContent = "Pay ₦" + CONFIG.PRICE_NAIRA.toLocaleString("en-NG") + " securely";
+      });
+  });
+
+  // ---- Returning from Paystack (?reference=...) ----
+  var params;
+  try { params = new URLSearchParams(window.location.search); } catch (e) { params = null; }
+  var reference = params && (params.get("reference") || params.get("trxref"));
+  if (reference) {
+    var panel = document.getElementById("return");
+    var card = document.getElementById("return-card");
+    var title = document.getElementById("return-title");
+    var text = document.getElementById("return-text");
+    panel.hidden = false;
+
+    var attempts = 0;
+    var check = function () {
+      attempts++;
+      fetch(CONFIG.API_BASE + "/api/payments/verify/" + encodeURIComponent(reference))
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.status === "success") {
+            var until = new Date(data.expiresAt).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" });
+            card.dataset.state = "success";
+            title.textContent = data.studentName + "'s account is active";
+            text.textContent = "Full access until " + until + ". Open Scholars&Tutors and log in, or close and reopen the app if it's already open.";
+          } else if (data.status === "pending" && attempts < 6) {
+            setTimeout(check, 4000);
+          } else if (data.status === "pending") {
+            card.dataset.state = "checking";
+            title.textContent = "Your payment is still processing";
+            text.textContent = "Bank transfers can take a few minutes. The account will unlock on its own once it clears. You can close this page.";
+          } else {
+            card.dataset.state = "failed";
+            title.textContent = "This payment didn't go through";
+            text.textContent = "You haven't been charged. Scroll down to try again, or email jamb@euritechnologies.com if money left your account.";
+          }
+        })
+        .catch(function () {
+          card.dataset.state = "checking";
+          title.textContent = "We couldn't confirm the payment yet";
+          text.textContent = "If you completed payment, the account will still unlock automatically. Reference: " + reference;
+        });
+    };
+    check();
+  }
+})();
+</script>
+</body>
+</html>
