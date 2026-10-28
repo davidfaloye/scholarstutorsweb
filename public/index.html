@@ -3,691 +3,1610 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Scholars&amp;Tutors</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Timed JAMB CBT practice, a diagnostic that finds your weak topics, and an explanation for every question you miss. Free for 8 days, then ₦2,000 a year.">
+<title>Scholars&Tutors</title>
+<meta name="description" content="Timed JAMB CBT practice, a diagnostic that finds your weak topics, and PAT's explanation for every question you miss. Free for 8 days, then ₦2,000 a year.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: dark CBT-console identity. Hero pairs the promise with a working mock question; the rest of the page is calm bands leading to the activation form. */
+/* ─── DESIGN TOKENS ───────────────────────────────────────────────────────────
+   Layout: full-bleed forest green hero → clean white reading sections →
+   dark green activation band. Bold score numerals as the hero centrepiece.
+   Left-aligned body text throughout. One accent: golden yellow.
+*/
 :root {
-  --bg: #0E0D1A;
-  --surface: #17152A;
-  --surface-2: #211E3B;
-  --line: #2E2A4F;
-  --fg: #EEEDF7;
-  --muted: #A3A0C2;
-  --accent: #6C63FF;
-  --accent-soft: rgba(108, 99, 255, 0.16);
-  --accent-ink: #FFFFFF;
-  --gold: #FFB547;
-  --gold-ink: #1C1300;
-  --gold-text: #FFB547;
-  --good: #3DD68C;
-  --good-soft: rgba(61, 214, 140, 0.14);
-  --bad: #FF6B6B;
-  --bad-soft: rgba(255, 107, 107, 0.14);
-  --shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7);
-  --display: "Syne", "Trebuchet MS", system-ui, sans-serif;
-  --body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --radius: 14px;
-  --max: 1140px;
-  color-scheme: dark;
-}
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg: #F6F5FC; --surface: #FFFFFF; --surface-2: #EEECFA; --line: #DCD9F0;
-    --fg: #16142B; --muted: #5C5979; --accent: #5A51EE; --accent-soft: rgba(90, 81, 238, 0.10);
-    --accent-ink: #FFFFFF; --gold: #FFB547; --gold-ink: #1C1300; --gold-text: #9A5E00;
-    --good: #138A55; --good-soft: rgba(19, 138, 85, 0.10); --bad: #C93838; --bad-soft: rgba(201, 56, 56, 0.09);
-    --shadow: 0 30px 70px -35px rgba(40, 30, 120, 0.35);
-    color-scheme: light;
-  }
-}
-:root[data-theme="light"] {
-  --bg: #F6F5FC; --surface: #FFFFFF; --surface-2: #EEECFA; --line: #DCD9F0;
-  --fg: #16142B; --muted: #5C5979; --accent: #5A51EE; --accent-soft: rgba(90, 81, 238, 0.10);
-  --accent-ink: #FFFFFF; --gold: #FFB547; --gold-ink: #1C1300; --gold-text: #9A5E00;
-  --good: #138A55; --good-soft: rgba(19, 138, 85, 0.10); --bad: #C93838; --bad-soft: rgba(201, 56, 56, 0.09);
-  --shadow: 0 30px 70px -35px rgba(40, 30, 120, 0.35);
+  --forest:    #0D2B1A;
+  --forest-2:  #142F1F;
+  --forest-3:  #1C4028;
+  --gold:      #F5C842;
+  --gold-dk:   #C49B1A;
+  --white:     #FFFFFF;
+  --ink:       #111B14;
+  --ink-2:     #2B3D30;
+  --mist:      #F4F6F4;
+  --mist-2:    #E8EDE9;
+  --dim:       #6B7C6E;
+  --line:      #D5DDD6;
+  --good:      #1A7F3C;
+  --good-bg:   #E8F5EC;
+  --bad:       #C0392B;
+  --bad-bg:    #FDECEA;
+  --disp:      "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --body:      "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius:    10px;
+  --max:       1120px;
   color-scheme: light;
 }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --forest:    #061409;
+    --forest-2:  #0D2219;
+    --forest-3:  #122B1E;
+    --gold:      #F5C842;
+    --gold-dk:   #D4A820;
+    --white:     #F2F5F3;
+    --ink:       #E8EDE9;
+    --ink-2:     #C4CECA;
+    --mist:      #0E1B12;
+    --mist-2:    #152219;
+    --dim:       #7A9480;
+    --line:      #2A3D2E;
+    --good:      #2CA553;
+    --good-bg:   #0D2B19;
+    --bad:       #D9534F;
+    --bad-bg:    #2B0D0C;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --forest:    #061409;
+  --forest-2:  #0D2219;
+  --forest-3:  #122B1E;
+  --gold:      #F5C842;
+  --gold-dk:   #D4A820;
+  --white:     #F2F5F3;
+  --ink:       #E8EDE9;
+  --ink-2:     #C4CECA;
+  --mist:      #0E1B12;
+  --mist-2:    #152219;
+  --dim:       #7A9480;
+  --line:      #2A3D2E;
+  --good:      #2CA553;
+  --good-bg:   #0D2B19;
+  --bad:       #D9534F;
+  --bad-bg:    #2B0D0C;
+  color-scheme: dark;
+}
 
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+/* ─── RESET + BASE ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 body {
-  background: var(--bg); color: var(--fg);
-  font-family: var(--body); font-size: 16px; line-height: 1.6;
+  background: var(--mist);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  margin: 0;
 }
 body::before {
-  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
-  z-index: 10; background: var(--bg);
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 50;
+  background: var(--forest);
 }
 a { color: inherit; }
-h1, h2, h3 { font-family: var(--display); line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
 p { margin: 0; }
+h1, h2, h3, h4 {
+  font-family: var(--disp);
+  line-height: 1.05;
+  margin: 0;
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+}
+img { max-width: 100%; display: block; }
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─── LAYOUT UTILS ─────────────────────────────────────────────────────────── */
 .wrap {
-  max-width: var(--max); margin: 0 auto;
+  max-width: var(--max);
+  margin: 0 auto;
   padding-left: max(20px, env(safe-area-inset-left, 0px));
   padding-right: max(20px, env(safe-area-inset-right, 0px));
 }
-.eyebrow {
-  font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--gold-text);
-}
-.muted { color: var(--muted); }
-:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
 
-/* Buttons */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  min-height: 52px; padding: 0 22px; border-radius: 12px; border: 1px solid transparent;
-  font: 700 15.5px/1 var(--body); text-decoration: none; cursor: pointer;
-  transition: transform .15s ease, background-color .15s ease, border-color .15s ease;
+/* ─── NAV ───────────────────────────────────────────────────────────────────── */
+.nav-wrap {
+  background: var(--forest);
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 40;
 }
-.btn:hover { transform: translateY(-1px); }
-.btn-play { background: var(--gold); color: var(--gold-ink); }
-.btn-play small { display: block; font: 500 10.5px/1.2 var(--body); letter-spacing: 0.06em; text-transform: uppercase; opacity: .75; }
-.btn-play span { text-align: left; line-height: 1.15; }
-.btn-ghost { border-color: var(--line); color: var(--fg); background: transparent; }
-.btn-ghost:hover { border-color: var(--accent); }
-.btn-accent { background: var(--accent); color: var(--accent-ink); width: 100%; }
-.btn-accent:disabled { opacity: .6; cursor: progress; transform: none; }
-
-/* Header */
-.top {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
-  background: color-mix(in srgb, var(--bg) 86%, transparent);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
 }
-.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 66px; }
-.logo { font: 800 20px/1 var(--display); text-decoration: none; letter-spacing: -0.02em; white-space: nowrap; }
-.logo b { color: var(--gold); font-weight: 800; }
-.nav-links { display: flex; gap: 26px; font-size: 14.5px; font-weight: 500; }
-.nav-links a { text-decoration: none; color: var(--muted); }
-.nav-links a:hover { color: var(--fg); }
-.nav .btn { min-height: 42px; padding: 0 16px; font-size: 14px; }
-@media (max-width: 860px) { .nav-links { display: none; } }
+.logo {
+  font-family: var(--disp);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.logo-amp { color: var(--gold); }
+.nav-links {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-links a {
+  color: rgba(255,255,255,.65);
+  text-decoration: none;
+  transition: color .15s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  background: var(--gold);
+  color: #111;
+  font-family: var(--body);
+  font-size: 13.5px;
+  font-weight: 700;
+  padding: 9px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color .15s, transform .15s;
+  flex-shrink: 0;
+}
+.nav-cta:hover { background: #e0b530; transform: translateY(-1px); }
+@media (max-width: 760px) { .nav-links { display: none; } }
 
-/* Payment return banner */
-.return { padding-block: 22px; }
+/* ─── PAYMENT RETURN BANNER ─────────────────────────────────────────────────── */
+.return-strip { background: var(--mist); padding: 16px 0; }
 .return-card {
-  display: flex; gap: 18px; align-items: flex-start; padding: 20px 22px;
-  border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--line);
+  background: var(--white);
 }
-.return-card[data-state="success"] { border-color: var(--good); background: var(--good-soft); }
-.return-card[data-state="failed"] { border-color: var(--bad); background: var(--bad-soft); }
-.return-dot { flex: none; width: 12px; height: 12px; margin-top: 8px; border-radius: 50%; background: var(--muted); }
+.return-card[data-state="success"] { border-color: var(--good); background: var(--good-bg); }
+.return-card[data-state="failed"]  { border-color: var(--bad);  background: var(--bad-bg);  }
+.return-dot {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: var(--dim);
+}
 .return-card[data-state="success"] .return-dot { background: var(--good); }
-.return-card[data-state="failed"] .return-dot { background: var(--bad); }
-.return-card[data-state="checking"] .return-dot { animation: pulse 1s ease-in-out infinite; background: var(--accent); }
-.return-card h2 { font-size: 21px; margin-bottom: 4px; }
-@keyframes pulse { 50% { opacity: .3; } }
+.return-card[data-state="failed"]  .return-dot { background: var(--bad);  }
+.return-card[data-state="checking"] .return-dot {
+  background: var(--gold);
+  animation: blink 1s ease-in-out infinite;
+}
+@keyframes blink { 50% { opacity: .2; } }
+.return-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 3px; }
 
-/* Hero */
-.hero { padding-block: 64px 72px; position: relative; overflow: hidden; }
-.hero::before {
-  content: ""; position: absolute; inset: -20% -10% auto auto; width: 620px; height: 620px; max-width: 100%;
-  background: radial-gradient(closest-side, var(--accent-soft), transparent);
+/* ─── HERO ──────────────────────────────────────────────────────────────────── */
+.hero {
+  background: var(--forest);
+  color: var(--white);
+  padding-block: 72px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 70% at 110% -10%, rgba(245,200,66,.12), transparent 60%),
+              radial-gradient(ellipse 60% 80% at -10% 110%, rgba(28,64,40,.9), transparent 60%);
   pointer-events: none;
 }
-.hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; position: relative; }
-.hero-copy { display: grid; gap: 22px; min-width: 0; }
-.hero h1 { font-size: clamp(40px, 6vw, 70px); font-weight: 800; }
-.hero h1 em { font-style: normal; color: var(--gold); }
-.lede { font-size: 18.5px; color: var(--muted); max-width: 34em; }
-.cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
-.fine { font-size: 14px; color: var(--muted); }
-.fine strong { color: var(--fg); font-weight: 700; }
-@media (max-width: 920px) {
-  .hero { padding-block: 40px 56px; }
-  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 64px;
+  align-items: center;
+}
+.hero-tag {
+  display: inline-block;
+  background: rgba(245,200,66,.15);
+  border: 1px solid rgba(245,200,66,.3);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 5px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(42px, 6vw, 72px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.0;
+  margin-bottom: 20px;
+}
+.hero h1 .hl {
+  color: var(--gold);
+  display: block;
+}
+.hero-sub {
+  font-size: 17px;
+  line-height: 1.6;
+  color: rgba(255,255,255,.7);
+  max-width: 36em;
+  margin-bottom: 32px;
+}
+.hero-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: #111;
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 22px;
+  border-radius: 10px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color .15s, transform .15s;
+}
+.btn-primary:hover { background: #e0b530; transform: translateY(-1px); }
+.btn-primary small {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: .7;
+  line-height: 1;
+}
+.btn-primary span { text-align: left; line-height: 1.2; }
+.btn-ghost-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,.75);
+  font-family: var(--body);
+  font-weight: 500;
+  font-size: 15px;
+  text-decoration: none;
+  padding: 14px 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: color .15s;
+}
+.btn-ghost-white:hover { color: var(--white); }
+.hero-note {
+  margin-top: 20px;
+  font-size: 13.5px;
+  color: rgba(255,255,255,.45);
 }
 
-/* CBT console */
-.cbt {
-  min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
-  box-shadow: var(--shadow); overflow: hidden;
+/* Score card ── hero right column */
+.hero-score {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 16px;
+  padding: 28px;
+  backdrop-filter: blur(6px);
 }
-.cbt-bar {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  padding: 14px 18px; background: var(--surface-2); border-bottom: 1px solid var(--line);
+.score-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 6px;
 }
-.cbt-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-.cbt-tab {
-  font: 500 12.5px/1 var(--body); padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line);
-  background: transparent; color: var(--muted); cursor: pointer;
+.score-big {
+  font-family: var(--disp);
+  font-size: clamp(80px, 12vw, 128px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  position: relative;
 }
-.cbt-tab[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-.timer {
-  font: 500 15px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--gold-text);
-  display: flex; align-items: center; gap: 8px;
+.score-big .out-of {
+  font-size: 0.28em;
+  font-weight: 600;
+  color: rgba(255,255,255,.4);
+  letter-spacing: -0.01em;
+  vertical-align: super;
+  margin-left: 4px;
 }
-.timer::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); animation: pulse 2s ease-in-out infinite; }
-.cbt-body { padding: 22px 22px 18px; display: grid; gap: 16px; }
-.qmeta { font: 500 12.5px/1 var(--mono); color: var(--muted); letter-spacing: 0.04em; }
-.qtext { font-size: 18px; font-weight: 500; line-height: 1.5; }
-.qtext u { text-decoration-color: var(--gold); text-underline-offset: 4px; text-decoration-thickness: 2px; }
-.opts { display: grid; gap: 8px; }
-.opt {
-  display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: center; text-align: left;
-  width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid var(--line);
-  background: var(--bg); color: var(--fg); font: 400 15.5px/1.4 var(--body); cursor: pointer;
-  transition: border-color .15s ease, background-color .15s ease;
+.score-bar-track {
+  height: 6px;
+  background: rgba(255,255,255,.1);
+  border-radius: 3px;
+  margin: 14px 0 20px;
+  overflow: hidden;
 }
-.opt:hover:not(:disabled) { border-color: var(--accent); }
-.opt:disabled { cursor: default; }
-.opt-key {
-  display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px;
-  background: var(--surface-2); font: 500 13px/1 var(--mono);
+.score-bar-fill {
+  height: 100%;
+  width: 73%;
+  background: var(--gold);
+  border-radius: 3px;
 }
-.opt.is-right { border-color: var(--good); background: var(--good-soft); }
-.opt.is-right .opt-key { background: var(--good); color: var(--bg); }
-.opt.is-wrong { border-color: var(--bad); background: var(--bad-soft); }
-.opt.is-wrong .opt-key { background: var(--bad); color: var(--bg); }
-.pat {
-  border-radius: 12px; padding: 14px 16px; background: var(--accent-soft);
-  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
-  font-size: 14.5px; display: grid; gap: 6px;
+.score-subs { display: grid; gap: 10px; }
+.score-sub {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
 }
-.pat-head { font: 700 13px/1 var(--body); color: var(--accent); display: flex; align-items: center; gap: 8px; }
-.pat-head::before {
-  content: "P"; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px;
-  background: var(--accent); color: var(--accent-ink); font: 800 12px/1 var(--display);
+.score-sub-name { color: rgba(255,255,255,.65); }
+.score-sub-val {
+  font-family: var(--disp);
+  font-weight: 700;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
 }
-.cbt-foot {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 14px 22px 18px; border-top: 1px solid var(--line);
+.score-sub-track {
+  grid-column: 1 / -1;
+  height: 3px;
+  background: rgba(255,255,255,.08);
+  border-radius: 2px;
+  overflow: hidden;
 }
-.grid-nav { display: flex; gap: 4px; flex-wrap: wrap; min-width: 0; }
-.grid-nav i {
-  width: 18px; height: 18px; border-radius: 4px; background: var(--surface-2);
-  font: 500 9px/18px var(--mono); text-align: center; font-style: normal; color: var(--muted);
+.score-sub-fill { height: 100%; border-radius: 2px; background: rgba(245,200,66,.5); }
+.score-badge {
+  margin-top: 18px;
+  padding: 11px 14px;
+  background: rgba(245,200,66,.12);
+  border: 1px solid rgba(245,200,66,.25);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--gold);
+  font-weight: 500;
 }
-.grid-nav i.done { background: color-mix(in srgb, var(--accent) 55%, var(--surface-2)); color: var(--accent-ink); }
-.grid-nav i.now { background: var(--gold); color: var(--gold-ink); }
-.next {
-  flex: none; font: 700 14px/1 var(--body); padding: 11px 16px; border-radius: 10px;
-  border: none; background: var(--accent); color: var(--accent-ink); cursor: pointer;
-}
-.cbt-caption { margin-top: 12px; font-size: 13px; color: var(--muted); text-align: center; }
+.score-badge strong { font-weight: 700; }
 
-/* Format strip */
-.format { border-block: 1px solid var(--line); background: var(--surface); }
-.format-grid { display: grid; grid-template-columns: auto repeat(4, 1fr); gap: 28px; align-items: center; padding-block: 30px; }
-.format-label { font-family: var(--display); font-weight: 700; font-size: 17px; max-width: 12em; line-height: 1.25; }
-.stat { display: grid; gap: 2px; }
-.stat b { font: 800 34px/1 var(--display); font-variant-numeric: tabular-nums; }
-.stat span { font-size: 13.5px; color: var(--muted); }
 @media (max-width: 860px) {
-  .format-grid { grid-template-columns: repeat(2, 1fr); }
-  .format-label { grid-column: 1 / -1; max-width: none; }
+  .hero-inner { grid-template-columns: 1fr; gap: 44px; }
+  .hero { padding-block: 52px 60px; }
+  .score-big { font-size: 96px; }
 }
 
-/* Sections */
-.section { padding-block: 96px; }
-.section-head { display: grid; gap: 14px; max-width: 640px; margin-bottom: 48px; }
-.section-head h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 800; }
-.section-head p { color: var(--muted); font-size: 17.5px; }
-@media (max-width: 640px) { .section { padding-block: 64px; } }
+/* ─── FORMAT STRIP ──────────────────────────────────────────────────────────── */
+.format-strip {
+  background: var(--gold);
+  color: var(--ink);
+}
+.format-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  align-items: stretch;
+  padding-block: 0;
+}
+.fmt-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 28px;
+  border-right: 1px solid rgba(0,0,0,.12);
+  flex: 1;
+  min-width: 130px;
+}
+.fmt-item:last-child { border-right: none; }
+.fmt-num {
+  font-family: var(--disp);
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  flex-shrink: 0;
+}
+.fmt-desc {
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  max-width: 80px;
+  opacity: .75;
+}
+@media (max-width: 640px) {
+  .format-inner { flex-wrap: wrap; }
+  .fmt-item { border-right: none; border-bottom: 1px solid rgba(0,0,0,.1); flex-basis: 50%; }
+  .fmt-item:nth-child(odd) { border-right: 1px solid rgba(0,0,0,.1); }
+  .fmt-item:last-child, .fmt-item:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+}
 
-/* Features */
-.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
-.feat { background: var(--bg); padding: 30px 28px; display: grid; gap: 10px; align-content: start; min-width: 0; }
-.feat h3 { font-size: 21px; font-weight: 700; }
-.feat p { color: var(--muted); font-size: 15.5px; }
-.feat-tag { font: 500 11.5px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-text); }
-.feat.wide { grid-column: span 2; background: var(--surface); grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
-.feat.wide > div { display: grid; gap: 10px; }
-.score {
-  display: grid; gap: 12px; padding: 20px; border-radius: 14px; background: var(--bg); border: 1px solid var(--line);
+/* ─── SECTIONS ──────────────────────────────────────────────────────────────── */
+.section {
+  padding-block: 88px;
 }
-.score-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-.score-top b { font: 800 44px/1 var(--display); font-variant-numeric: tabular-nums; }
-.score-top b small { font-size: 18px; color: var(--muted); font-weight: 600; }
-.bars { display: grid; gap: 9px; }
-.bar { display: grid; grid-template-columns: 96px 1fr 30px; gap: 10px; align-items: center; font-size: 13px; }
-.bar span:first-child { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.bar-track { height: 8px; border-radius: 4px; background: var(--surface-2); overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 4px; background: var(--accent); }
-.bar-fill.low { background: var(--gold); }
-.bar em { font: 500 12.5px/1 var(--mono); font-style: normal; text-align: right; font-variant-numeric: tabular-nums; }
-@media (max-width: 920px) {
-  .features { grid-template-columns: 1fr 1fr; }
-  .feat.wide { grid-template-columns: 1fr; }
+.section-head {
+  margin-bottom: 52px;
 }
-@media (max-width: 600px) {
-  .features { grid-template-columns: 1fr; }
-  .feat.wide { grid-column: auto; }
+.section-head h2 {
+  font-size: clamp(30px, 4.5vw, 48px);
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 14px;
 }
+.section-head p {
+  font-size: 17px;
+  color: var(--dim);
+  max-width: 44em;
+}
+@media (max-width: 600px) { .section { padding-block: 60px; } }
 
-/* Steps */
-.steps-band { background: var(--surface); border-block: 1px solid var(--line); }
-.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; counter-reset: step; list-style: none; margin: 0; padding: 0; }
-.steps li { display: grid; gap: 10px; align-content: start; position: relative; padding-top: 58px; }
-.steps li::before {
-  counter-increment: step; content: counter(step);
-  position: absolute; top: 0; left: 0; display: grid; place-items: center;
-  width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--accent);
-  font: 700 16px/1 var(--display); color: var(--accent);
+/* ─── FEATURES ──────────────────────────────────────────────────────────────── */
+.features-wrap { background: var(--white); }
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--line);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
 }
-.steps li::after {
-  content: ""; position: absolute; top: 20px; left: 52px; right: -16px; height: 1px; background: var(--line);
-}
-.steps li:last-child::after { display: none; }
-.steps li.key::before { background: var(--gold); border-color: var(--gold); color: var(--gold-ink); }
-.steps h3 { font-size: 19px; font-weight: 700; }
-.steps p { color: var(--muted); font-size: 15px; }
-@media (max-width: 860px) {
-  .steps { grid-template-columns: 1fr 1fr; row-gap: 40px; }
-  .steps li::after { display: none; }
-}
-@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
-
-/* Pricing */
-.pricing-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 28px; align-items: start; }
-.plan {
-  border-radius: 20px; padding: 32px; background: var(--accent); color: var(--accent-ink);
-  display: grid; gap: 22px; position: relative; overflow: hidden;
-}
-.plan::after {
-  content: "₦"; position: absolute; right: -18px; bottom: -70px; font: 800 260px/1 var(--display);
-  opacity: 0.09; pointer-events: none;
-}
-.plan-price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.plan-price b { font: 800 64px/1 var(--display); letter-spacing: -0.02em; }
-.plan-price span { font-size: 17px; opacity: .85; }
-.plan ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: 15.5px; }
-.plan li { display: grid; grid-template-columns: 20px 1fr; gap: 10px; }
-.plan li::before { content: "✓"; font-weight: 700; color: var(--gold); }
-.plan-note { font-size: 14px; opacity: .85; border-top: 1px solid rgba(255,255,255,.25); padding-top: 16px; position: relative; z-index: 1; }
-.methods { display: flex; flex-wrap: wrap; gap: 8px; }
-.methods span {
-  font: 500 12.5px/1 var(--body); padding: 8px 11px; border-radius: 999px;
-  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22);
-}
-.activate {
-  border-radius: 20px; padding: 32px; background: var(--surface); border: 1px solid var(--line);
-  display: grid; gap: 22px; min-width: 0;
-}
-.activate h3 { font-size: 26px; font-weight: 800; }
-.field { display: grid; gap: 7px; }
-.field label { font-weight: 700; font-size: 14.5px; }
-.field .hint { font-size: 13.5px; color: var(--muted); }
-.field input {
-  width: 100%; min-height: 50px; padding: 0 14px; border-radius: 11px;
-  border: 1px solid var(--line); background: var(--bg); color: var(--fg); font: 400 16px/1 var(--body);
-}
-.field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-.field input[aria-invalid="true"] { border-color: var(--bad); }
-.check { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; cursor: pointer; }
-.check input { margin-top: 4px; accent-color: var(--accent); width: 17px; height: 17px; }
-.form-msg { font-size: 14.5px; padding: 12px 14px; border-radius: 10px; }
-.form-msg.err { background: var(--bad-soft); color: var(--fg); border: 1px solid var(--bad); }
-.form-msg.ok { background: var(--good-soft); border: 1px solid var(--good); }
-.secure { display: flex; gap: 8px; align-items: center; font-size: 13.5px; color: var(--muted); }
-@media (max-width: 860px) { .pricing-grid { grid-template-columns: 1fr; } }
-@media (max-width: 480px) { .plan, .activate { padding: 24px 20px; } }
-
-/* Schools */
-.schools {
-  display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: center;
-  padding: 40px; border-radius: 20px; border: 1px dashed var(--gold); background: color-mix(in srgb, var(--gold) 6%, var(--bg));
-}
-.schools h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 800; margin-bottom: 12px; }
-.schools p { color: var(--muted); }
-.contact { display: grid; gap: 10px; }
-.contact-row {
-  display: flex; gap: 10px; align-items: center; justify-content: space-between;
-  padding: 12px 14px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line);
+.feat {
+  background: var(--white);
+  padding: 28px 26px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
   min-width: 0;
 }
-.contact-row code { font: 500 15px/1.3 var(--mono); user-select: all; overflow-wrap: anywhere; min-width: 0; }
-.copy {
-  flex: none; font: 700 13px/1 var(--body); padding: 9px 12px; border-radius: 8px; cursor: pointer;
-  border: 1px solid var(--line); background: var(--surface-2); color: var(--fg);
+.feat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--mist-2);
+  display: grid;
+  place-items: center;
+  margin-bottom: 4px;
+  color: var(--forest);
 }
-@media (max-width: 760px) { .schools { grid-template-columns: 1fr; padding: 28px 22px; } }
+.feat h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.feat p { font-size: 14.5px; color: var(--dim); line-height: 1.55; }
+.feat.hero-feat {
+  grid-column: span 2;
+  background: var(--forest);
+  color: var(--white);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: center;
+}
+.feat.hero-feat h3 { color: var(--white); font-size: 22px; }
+.feat.hero-feat p  { color: rgba(255,255,255,.65); }
+.feat.hero-feat .feat-icon { background: rgba(255,255,255,.1); color: var(--gold); }
+.feat-copy { display: grid; gap: 8px; }
+/* mock score card inside feature */
+.score-mini {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  padding: 18px;
+}
+.score-mini-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.score-mini-top .smn { font-size: 12px; color: rgba(255,255,255,.45); }
+.score-mini-num {
+  font-family: var(--disp);
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.score-mini-bars { display: grid; gap: 8px; }
+.smbar {
+  display: grid;
+  grid-template-columns: 72px 1fr 30px;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+}
+.smbar-name { color: rgba(255,255,255,.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.smbar-track { height: 5px; border-radius: 3px; background: rgba(255,255,255,.1); overflow: hidden; }
+.smbar-fill { height: 100%; border-radius: 3px; background: var(--gold); opacity: .7; }
+.smbar-fill.hi { opacity: 1; }
+.smbar-val { font-size: 11.5px; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; color: rgba(255,255,255,.7); }
+@media (max-width: 900px) {
+  .feat-grid { grid-template-columns: 1fr 1fr; }
+  .feat.hero-feat { grid-template-columns: 1fr; }
+}
+@media (max-width: 540px) {
+  .feat-grid { grid-template-columns: 1fr; }
+  .feat.hero-feat { grid-column: auto; }
+}
 
-/* FAQ */
-.faq { display: grid; gap: 10px; max-width: 820px; }
-.faq details { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+/* ─── CBT DEMO ──────────────────────────────────────────────────────────────── */
+.demo-band { background: var(--mist); }
+.demo-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 60px;
+  align-items: center;
+}
+.demo-copy h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; margin-bottom: 14px; }
+.demo-copy p { font-size: 16.5px; color: var(--dim); margin-bottom: 28px; }
+.demo-points { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+.demo-points li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.demo-bullet {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  margin-top: 2px;
+}
+.demo-bullet svg { width: 11px; height: 11px; fill: currentColor; }
+/* CBT widget */
+.cbt {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px -20px rgba(13,43,26,.15);
+}
+.cbt-top {
+  background: var(--forest);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cbt-tabs {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.cbt-tab {
+  font: 500 12px/1 var(--body);
+  padding: 7px 11px;
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: transparent;
+  color: rgba(255,255,255,.6);
+  cursor: pointer;
+  transition: background-color .12s, color .12s;
+}
+.cbt-tab[aria-pressed="true"] {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #111;
+  font-weight: 700;
+}
+.cbt-timer {
+  font: 600 14px/1 var(--body);
+  font-variant-numeric: tabular-nums;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.cbt-timer-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: blink 2s ease-in-out infinite;
+}
+.cbt-body { padding: 20px; }
+.cbt-qmeta { font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em; color: var(--dim); margin-bottom: 10px; text-transform: uppercase; }
+.cbt-qtext { font-size: 16px; font-weight: 500; line-height: 1.55; color: var(--ink); margin-bottom: 16px; }
+.cbt-qtext u { text-decoration-color: var(--gold-dk); text-underline-offset: 3px; }
+.opts { display: grid; gap: 7px; }
+.opt {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 11px;
+  align-items: center;
+  width: 100%;
+  padding: 10px 13px;
+  border-radius: 8px;
+  border: 1.5px solid var(--line);
+  background: var(--mist);
+  color: var(--ink);
+  font: 400 14.5px/1.4 var(--body);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .12s, background-color .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--forest); background: var(--mist-2); }
+.opt:disabled { cursor: default; }
+.opt-key {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  font: 600 12px/1 var(--body);
+  color: var(--dim);
+}
+.opt.is-right { border-color: var(--good); background: var(--good-bg); }
+.opt.is-right .opt-key { background: var(--good); color: var(--white); border-color: var(--good); }
+.opt.is-wrong { border-color: var(--bad); background: var(--bad-bg); }
+.opt.is-wrong .opt-key { background: var(--bad); color: var(--white); border-color: var(--bad); }
+.pat {
+  margin-top: 14px;
+  border-radius: 10px;
+  padding: 14px 15px;
+  background: rgba(13,43,26,.06);
+  border: 1px solid rgba(13,43,26,.12);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.pat-head {
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--forest);
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.pat-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: var(--forest);
+  color: var(--gold);
+  font-family: var(--disp);
+  font-size: 11px;
+  font-weight: 800;
+}
+.cbt-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px 16px;
+  border-top: 1px solid var(--line);
+  gap: 12px;
+}
+.qgrid { display: flex; gap: 3px; flex-wrap: wrap; min-width: 0; }
+.qgrid i {
+  width: 17px;
+  height: 17px;
+  border-radius: 4px;
+  background: var(--mist-2);
+  font: 500 9px/17px var(--body);
+  text-align: center;
+  font-style: normal;
+  color: var(--dim);
+}
+.qgrid i.qg-done { background: rgba(13,43,26,.15); color: var(--forest); }
+.qgrid i.qg-now  { background: var(--gold); color: #111; font-weight: 700; }
+.btn-next {
+  flex-shrink: 0;
+  font: 700 13px/1 var(--body);
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: var(--forest);
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color .12s;
+}
+.btn-next:hover { background: var(--forest-3); }
+.cbt-caption { font-size: 13px; color: var(--dim); margin-top: 12px; text-align: center; }
+@media (max-width: 840px) {
+  .demo-layout { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ─── HOW IT WORKS ──────────────────────────────────────────────────────────── */
+.how-band { background: var(--white); }
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: var(--line);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  counter-reset: step;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.step {
+  background: var(--white);
+  padding: 28px 24px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  counter-increment: step;
+  position: relative;
+}
+.step-num {
+  font-family: var(--disp);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dim);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.step-num::before { content: "0" counter(step); }
+.step.key-step { background: var(--forest); }
+.step.key-step .step-num { color: var(--gold); }
+.step.key-step h3 { color: var(--white); }
+.step.key-step p { color: rgba(255,255,255,.65); }
+.step h3 { font-size: 18px; font-weight: 700; }
+.step p  { font-size: 14.5px; color: var(--dim); line-height: 1.55; }
+@media (max-width: 760px) {
+  .steps { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 440px) {
+  .steps { grid-template-columns: 1fr; }
+}
+
+/* ─── PRICING ───────────────────────────────────────────────────────────────── */
+.pricing-band { background: var(--mist); }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.plan-card {
+  background: var(--forest);
+  color: var(--white);
+  border-radius: 16px;
+  padding: 32px;
+  display: grid;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.plan-card::before {
+  content: "₦";
+  position: absolute;
+  right: -20px;
+  bottom: -80px;
+  font-family: var(--disp);
+  font-size: 280px;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(255,255,255,.04);
+  pointer-events: none;
+  letter-spacing: -0.05em;
+}
+.plan-badge {
+  display: inline-block;
+  background: rgba(245,200,66,.15);
+  border: 1px solid rgba(245,200,66,.3);
+  color: var(--gold);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.plan-price-big {
+  font-family: var(--disp);
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.plan-price-per {
+  font-size: 16px;
+  color: rgba(255,255,255,.6);
+}
+.plan-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 11px;
+}
+.plan-list li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14.5px;
+  color: rgba(255,255,255,.85);
+  line-height: 1.45;
+}
+.plan-list li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--gold);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 9l4 4 6-7' stroke='%23111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+.plan-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+.plan-method {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.7);
+}
+.plan-note {
+  font-size: 13px;
+  color: rgba(255,255,255,.45);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: 16px;
+}
+
+/* Activation form */
+.activate-card {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 32px;
+  display: grid;
+  gap: 22px;
+}
+.activate-card h3 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.activate-card .sub { font-size: 14.5px; color: var(--dim); }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; font-size: 14px; color: var(--ink); }
+.field .hint { font-size: 13px; color: var(--dim); }
+.field input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 13px;
+  border-radius: 9px;
+  border: 1.5px solid var(--line);
+  background: var(--mist);
+  color: var(--ink);
+  font: 400 16px/1 var(--body);
+  transition: border-color .12s, box-shadow .12s;
+}
+.field input:focus {
+  outline: none;
+  border-color: var(--forest);
+  box-shadow: 0 0 0 3px rgba(13,43,26,.1);
+}
+.field input[aria-invalid="true"] { border-color: var(--bad); }
+.check-label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--ink-2);
+}
+.check-label input {
+  margin-top: 2px;
+  accent-color: var(--forest);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.form-msg {
+  font-size: 14px;
+  padding: 12px 14px;
+  border-radius: 9px;
+}
+.form-msg.err { background: var(--bad-bg); color: var(--bad); border: 1px solid rgba(192,57,43,.2); }
+.form-msg.ok  { background: var(--good-bg); color: var(--good); border: 1px solid rgba(26,127,60,.2); }
+.btn-pay {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  background: var(--forest);
+  color: var(--white);
+  font: 700 16px/1 var(--body);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color .15s, transform .15s;
+}
+.btn-pay:hover { background: var(--forest-3); transform: translateY(-1px); }
+.btn-pay:disabled { opacity: .6; cursor: progress; transform: none; }
+.secure-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--dim);
+}
+@media (max-width: 800px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+  .plan-price-big { font-size: 56px; }
+}
+@media (max-width: 480px) { .plan-card, .activate-card { padding: 24px 20px; } }
+
+/* ─── SCHOOLS ───────────────────────────────────────────────────────────────── */
+.schools-band { background: var(--white); }
+.schools-inner {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 48px;
+  align-items: center;
+  border: 2px dashed var(--gold-dk);
+  border-radius: 16px;
+  padding: 44px;
+  background: rgba(245,200,66,.04);
+}
+.schools-inner h2 { font-size: clamp(24px, 3.5vw, 36px); font-weight: 800; margin-bottom: 12px; }
+.schools-inner p { color: var(--dim); font-size: 15.5px; line-height: 1.6; }
+.contact-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border-radius: 10px;
+  background: var(--mist);
+  border: 1.5px solid var(--line);
+  min-width: 0;
+}
+.contact-row code {
+  font: 500 14.5px/1.3 var(--body);
+  font-family: monospace;
+  user-select: all;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  color: var(--ink);
+}
+.btn-copy {
+  flex-shrink: 0;
+  font: 700 12.5px/1 var(--body);
+  padding: 8px 12px;
+  border-radius: 7px;
+  border: 1.5px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color .12s, background-color .12s;
+}
+.btn-copy:hover { border-color: var(--forest); }
+.contact-hint { font-size: 13px; color: var(--dim); margin-top: 8px; }
+@media (max-width: 700px) {
+  .schools-inner { grid-template-columns: 1fr; padding: 28px 22px; }
+}
+
+/* ─── FAQ ───────────────────────────────────────────────────────────────────── */
+.faq-band { background: var(--mist); }
+.faq { display: grid; gap: 8px; max-width: 760px; }
+.faq details {
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--white);
+  transition: border-color .15s;
+}
+.faq details:hover { border-color: var(--forest); }
 .faq summary {
-  list-style: none; cursor: pointer; padding: 18px 20px; font-weight: 700; font-size: 16.5px;
-  display: flex; justify-content: space-between; gap: 16px; align-items: center;
+  list-style: none;
+  cursor: pointer;
+  padding: 17px 20px;
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
 }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: "+"; font: 400 24px/1 var(--body); color: var(--accent); flex: none; transition: transform .2s ease; }
-.faq details[open] summary::after { transform: rotate(45deg); }
-.faq details p { padding: 0 20px 20px; color: var(--muted); max-width: 64ch; }
+.faq-arrow {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  display: grid;
+  place-items: center;
+  transition: transform .2s, background-color .15s, border-color .15s;
+  color: var(--dim);
+}
+.faq details[open] .faq-arrow {
+  transform: rotate(45deg);
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--white);
+}
+.faq details p {
+  padding: 0 20px 18px;
+  color: var(--dim);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 60ch;
+}
 
-/* Final CTA + footer */
-.final { text-align: center; display: grid; gap: 20px; justify-items: center; }
-.final h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; max-width: 14em; }
-.foot { border-top: 1px solid var(--line); padding-block: 32px; font-size: 14px; color: var(--muted); }
-.foot-row { display: flex; flex-wrap: wrap; gap: 16px 28px; justify-content: space-between; align-items: center; }
-.foot-links { display: flex; flex-wrap: wrap; gap: 20px; }
-.foot-links a { text-decoration: none; }
-.foot-links a:hover { color: var(--fg); }
+/* ─── FINAL CTA ─────────────────────────────────────────────────────────────── */
+.final-band { background: var(--forest); color: var(--white); }
+.final-inner {
+  text-align: center;
+  display: grid;
+  gap: 24px;
+  justify-items: center;
+  padding-block: 88px;
+}
+.final-inner h2 {
+  font-size: clamp(36px, 5.5vw, 60px);
+  font-weight: 800;
+  color: var(--white);
+  max-width: 14em;
+}
+.final-note { font-size: 15px; color: rgba(255,255,255,.5); }
+.final-btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; }
+.btn-ghost-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,.7);
+  font-family: var(--body);
+  font-weight: 500;
+  font-size: 15px;
+  text-decoration: none;
+  padding: 14px 20px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(255,255,255,.2);
+  background: transparent;
+  transition: border-color .15s, color .15s;
+}
+.btn-ghost-outline:hover { border-color: rgba(255,255,255,.5); color: var(--white); }
 
+/* ─── FOOTER ─────────────────────────────────────────────────────────────────── */
+.footer {
+  background: var(--forest-2);
+  border-top: 1px solid rgba(255,255,255,.07);
+  padding-block: 28px;
+}
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13.5px;
+  color: rgba(255,255,255,.4);
+}
+.footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
+.footer-links a { text-decoration: none; color: rgba(255,255,255,.4); transition: color .15s; }
+.footer-links a:hover { color: rgba(255,255,255,.8); }
+
+/* ─── REDUCED MOTION ──────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
 }
 </style>
-
 </head>
 <body>
-<header class="top">
+
+<!-- ── NAV ──────────────────────────────────────────────────────────────────── -->
+<header class="nav-wrap">
   <div class="wrap nav">
-    <a class="logo" href="#top" aria-label="Scholars and Tutors home">Scholars<b>&amp;</b>Tutors</a>
-    <nav class="nav-links" aria-label="Main">
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#schools">Schools</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-    <a class="btn btn-play" href="#pricing">Activate</a>
+    <a class="logo" href="#top" aria-label="Scholars and Tutors home">
+      Scholars<span class="logo-amp">&amp;</span>Tutors
+    </a>
+    <ul class="nav-links" aria-label="Main navigation">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="nav-cta" href="#pricing">Activate — ₦2,000</a>
   </div>
 </header>
 
-<section class="return" id="return" hidden aria-live="polite">
+<!-- ── PAYMENT RETURN ────────────────────────────────────────────────────────── -->
+<section class="return-strip" id="return" hidden aria-live="polite">
   <div class="wrap">
     <div class="return-card" id="return-card" data-state="checking">
       <span class="return-dot" aria-hidden="true"></span>
       <div>
         <h2 id="return-title">Confirming your payment…</h2>
-        <p class="muted" id="return-text">This usually takes a few seconds.</p>
+        <p id="return-text" style="color:var(--dim);font-size:14px;">This usually takes a few seconds.</p>
       </div>
     </div>
   </div>
 </section>
 
-<main id="top">
-  <section class="hero">
-    <div class="wrap hero-grid">
+<!-- ── HERO ──────────────────────────────────────────────────────────────────── -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-inner">
       <div class="hero-copy">
-        <p class="eyebrow">UTME preparation for Android</p>
-        <h1>Practise for JAMB the way you'll <em>write</em> it.</h1>
-        <p class="lede">Timed CBT mock exams, a diagnostic that finds your weak topics, and a clear explanation for every question you miss. Built for Nigerian candidates.</p>
-        <div class="cta-row">
-          <a class="btn btn-play js-play" href="#" target="_blank" rel="noopener">
-            <svg width="22" height="24" viewBox="0 0 22 24" aria-hidden="true"><path d="M2 1.5 L20 12 L2 22.5 Z" fill="currentColor"/></svg>
+        <div class="hero-tag">Android app · UTME preparation</div>
+        <h1>
+          Get the score<br>
+          <span class="hl">JAMB needs.</span>
+        </h1>
+        <p class="hero-sub">Timed CBT practice that mirrors what you'll face in the exam hall. A diagnostic that finds your gaps. PAT explains every question you miss, clearly.</p>
+        <div class="hero-btns">
+          <a class="btn-primary js-play" href="#" target="_blank" rel="noopener">
+            <svg width="20" height="22" viewBox="0 0 20 22" aria-hidden="true"><path d="M2 1.3L18.5 11 2 20.7z" fill="currentColor"/></svg>
             <span><small>Get it on</small>Google Play</span>
           </a>
-          <a class="btn btn-ghost" href="#pricing">Activate full access</a>
+          <a class="btn-ghost-white" href="#pricing">Activate full access →</a>
         </div>
-        <p class="fine"><strong>Free for 8 days</strong> when you install. After that, ₦2,000 covers a full year.</p>
+        <p class="hero-note">8-day free trial when you install. No card needed to start.</p>
       </div>
 
-      <div>
-        <div class="cbt" aria-label="Try a sample CBT question">
-          <div class="cbt-bar">
-            <div class="cbt-tabs" role="group" aria-label="Subject" id="cbt-tabs"></div>
-            <div class="timer" id="timer" aria-label="Time remaining">01:58:47</div>
+      <div class="hero-score" aria-label="Example mock exam result: 292 out of 400">
+        <p class="score-label">Example mock result</p>
+        <div class="score-big" aria-hidden="true">292<span class="out-of">/400</span></div>
+        <div class="score-bar-track" aria-hidden="true">
+          <div class="score-bar-fill"></div>
+        </div>
+        <div class="score-subs" aria-hidden="true">
+          <div class="score-sub">
+            <span class="score-sub-name">Use of English</span>
+            <span class="score-sub-val">81</span>
+            <div class="score-sub-track"><div class="score-sub-fill" style="width:81%"></div></div>
           </div>
-          <div class="cbt-body">
-            <p class="qmeta" id="qmeta">QUESTION 12 OF 180</p>
-            <p class="qtext" id="qtext"></p>
-            <div class="opts" id="opts"></div>
-            <div class="pat" id="pat" hidden>
-              <span class="pat-head">Ask PAT</span>
-              <p id="pat-text"></p>
-            </div>
+          <div class="score-sub">
+            <span class="score-sub-name">Mathematics</span>
+            <span class="score-sub-val">68</span>
+            <div class="score-sub-track"><div class="score-sub-fill" style="width:68%"></div></div>
           </div>
-          <div class="cbt-foot">
-            <div class="grid-nav" id="grid-nav" aria-hidden="true"></div>
-            <button class="next" id="next" type="button">Next question</button>
+          <div class="score-sub">
+            <span class="score-sub-name">Physics</span>
+            <span class="score-sub-val">74</span>
+            <div class="score-sub-track"><div class="score-sub-fill" style="width:74%"></div></div>
+          </div>
+          <div class="score-sub">
+            <span class="score-sub-name">Chemistry</span>
+            <span class="score-sub-val">69</span>
+            <div class="score-sub-track"><div class="score-sub-fill" style="width:69%"></div></div>
           </div>
         </div>
-        <p class="cbt-caption">Try it. Pick an answer to see how PAT explains it.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="format" aria-label="UTME format">
-    <div class="wrap format-grid">
-      <p class="format-label">Mock exams follow the real UTME format</p>
-      <div class="stat"><b>4</b><span>subjects, Use of English plus your three</span></div>
-      <div class="stat"><b>180</b><span>questions per sitting</span></div>
-      <div class="stat"><b>2 hrs</b><span>on the clock, like the CBT centre</span></div>
-      <div class="stat"><b>400</b><span>marks, scored the JAMB way</span></div>
-    </div>
-  </section>
-
-  <section class="section" id="features">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">What's in the app</p>
-        <h2>Everything you need between now and exam day.</h2>
-        <p>Practice tells you where you stand. Explanations tell you why. The weekly report tells you what to study next.</p>
-      </div>
-
-      <div class="features">
-        <article class="feat wide">
-          <div>
-            <span class="feat-tag">CBT simulator</span>
-            <h3>Full mock exams under real exam conditions.</h3>
-            <p>Same subject mix, same question count, same countdown. When time runs out you get a score out of 400 and a breakdown by subject, so exam day feels familiar.</p>
-          </div>
-          <div class="score" aria-label="Example mock exam result">
-            <div class="score-top">
-              <span class="muted">Example mock result</span>
-              <b>268<small>/400</small></b>
-            </div>
-            <div class="bars">
-              <div class="bar"><span>Use of English</span><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div><em>78</em></div>
-              <div class="bar"><span>Mathematics</span><div class="bar-track"><div class="bar-fill low" style="width:52%"></div></div><em>52</em></div>
-              <div class="bar"><span>Physics</span><div class="bar-track"><div class="bar-fill" style="width:71%"></div></div><em>71</em></div>
-              <div class="bar"><span>Chemistry</span><div class="bar-track"><div class="bar-fill" style="width:67%"></div></div><em>67</em></div>
-            </div>
-          </div>
-        </article>
-        <article class="feat">
-          <span class="feat-tag">Diagnostic</span>
-          <h3>Find your weak topics first.</h3>
-          <p>One sitting maps what you know across your subjects. Stop halfway and pick up later, or skip it and start practising straight away.</p>
-        </article>
-        <article class="feat">
-          <span class="feat-tag">Ask PAT</span>
-          <h3>An explanation for every miss.</h3>
-          <p>Every question in the bank comes with a worked explanation. Get one wrong and PAT walks you through the correct answer step by step.</p>
-        </article>
-        <article class="feat">
-          <span class="feat-tag">Weekly coach</span>
-          <h3>A report on what changed.</h3>
-          <p>Each week you get a short report: what improved, what slipped, and which topics to focus on next.</p>
-        </article>
-        <article class="feat">
-          <span class="feat-tag">Study plan</span>
-          <h3>Sessions that remind you.</h3>
-          <p>Schedule study sessions for each subject. The app reminds you 30 minutes before each one starts.</p>
-        </article>
-        <article class="feat">
-          <span class="feat-tag">Learn</span>
-          <h3>Video lessons by topic.</h3>
-          <p>Short lessons picked for each topic in your subjects, for when you need the concept taught again from the start.</p>
-        </article>
-        <article class="feat">
-          <span class="feat-tag">Practice</span>
-          <h3>Drill one topic at a time.</h3>
-          <p>Filter questions by subject, topic and accuracy, and keep going until a weak area becomes a strong one.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section steps-band" id="how">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">How it works</p>
-        <h2>Start free. Activate when you're ready.</h2>
-      </div>
-      <ol class="steps">
-        <li>
-          <h3>Install the app</h3>
-          <p>Download Scholars&amp;Tutors from Google Play and sign up with your email or phone number.</p>
-        </li>
-        <li>
-          <h3>Use it free for 8 days</h3>
-          <p>Every feature is open during your trial. Take the diagnostic, sit a mock, try PAT.</p>
-        </li>
-        <li class="key">
-          <h3>Activate on this website</h3>
-          <p>Pay ₦2,000 below by transfer, card, USSD or OPay, using the email or phone you signed up with.</p>
-        </li>
-        <li>
-          <h3>Keep studying</h3>
-          <p>Your account unlocks automatically. Open the app and everything is there for a full year.</p>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <section class="section" id="pricing">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Pricing</p>
-        <h2>One price. A full year.</h2>
-        <p>Pay once and keep access through your exam and beyond. Parents and guardians can pay on a student's behalf.</p>
-      </div>
-
-      <div class="pricing-grid">
-        <div class="plan">
-          <div>
-            <p style="font-weight:700; font-size:15px; opacity:.9; margin-bottom:10px;">Full access</p>
-            <div class="plan-price"><b>₦2,000</b><span>per year</span></div>
-          </div>
-          <ul>
-            <li>Unlimited CBT mock exams in the UTME format</li>
-            <li>Full question bank with an explanation for every question</li>
-            <li>Ask PAT on every question you get wrong</li>
-            <li>Weekly coach report and study plan reminders</li>
-            <li>Video lessons for every supported subject</li>
-          </ul>
-          <div class="methods" aria-label="Accepted payment methods">
-            <span>Bank transfer</span><span>Card</span><span>USSD</span><span>Bank account</span><span>OPay</span>
-          </div>
-          <p class="plan-note">One payment, no automatic renewal. If you activate before your current year ends, the new year is added on top.</p>
+        <div class="score-badge">
+          <strong>+41 points</strong> in 3 weeks of daily practice
         </div>
-
-        <form class="activate" id="activate-form" novalidate>
-          <div>
-            <h3>Activate an account</h3>
-            <p class="muted" style="margin-top:6px;">Install the app and sign up first, then pay here.</p>
-          </div>
-
-          <div class="field">
-            <label for="student-id">Student's email or phone number</label>
-            <input id="student-id" name="identifier" type="text" inputmode="email" autocomplete="username" placeholder="e.g. ada@gmail.com or 0803 123 4567" required>
-            <span class="hint">Use exactly what the student signed up with in the app.</span>
-          </div>
-
-          <label class="check" for="for-someone">
-            <input id="for-someone" type="checkbox">
-            <span>I'm paying for someone else (parent, guardian, sponsor)</span>
-          </label>
-
-          <div class="field" id="payer-field" hidden>
-            <label for="payer-email">Your email for the receipt</label>
-            <input id="payer-email" name="payerEmail" type="email" autocomplete="email" placeholder="you@example.com">
-            <span class="hint">The receipt goes here. The student's account still gets the access.</span>
-          </div>
-
-          <div class="form-msg" id="form-msg" role="alert" hidden></div>
-
-          <button class="btn btn-accent" id="pay-btn" type="submit">Pay ₦2,000 securely</button>
-          <p class="secure">
-            <svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><rect x="1" y="7" width="12" height="8" rx="2" fill="currentColor"/><path d="M4 7V5a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
-            Payment is handled by Paystack. The account unlocks automatically, usually within a minute.
-          </p>
-        </form>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section" id="schools" style="padding-top:0;">
-    <div class="wrap">
-      <div class="schools">
+<!-- ── FORMAT STRIP ───────────────────────────────────────────────────────────── -->
+<div class="format-strip" aria-label="UTME format details">
+  <div class="wrap">
+    <div class="format-inner">
+      <div class="fmt-item">
+        <span class="fmt-num">4</span>
+        <span class="fmt-desc">subjects per sitting</span>
+      </div>
+      <div class="fmt-item">
+        <span class="fmt-num">180</span>
+        <span class="fmt-desc">questions per exam</span>
+      </div>
+      <div class="fmt-item">
+        <span class="fmt-num">2h</span>
+        <span class="fmt-desc">on the clock, real timing</span>
+      </div>
+      <div class="fmt-item">
+        <span class="fmt-num">400</span>
+        <span class="fmt-desc">marks, scored like JAMB</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURES ───────────────────────────────────────────────────────────────── -->
+<section class="features-wrap section" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Built for the way JAMB actually works.</h2>
+      <p>Not a question dump. A system that tells you where to focus and explains every mistake.</p>
+    </div>
+    <div class="feat-grid">
+      <article class="feat hero-feat">
+        <div class="feat-copy">
+          <div class="feat-icon" style="background:rgba(245,200,66,.15);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Full CBT mock exams</h3>
+          <p>Same subject mix, same question count, same countdown. Score out of 400 with a breakdown by subject after each sitting.</p>
+        </div>
+        <div class="score-mini" aria-label="Mock exam score example">
+          <div class="score-mini-top">
+            <span class="smn">Mock exam #7</span>
+            <span class="score-mini-num">268</span>
+          </div>
+          <div class="score-mini-bars">
+            <div class="smbar"><span class="smbar-name">English</span><div class="smbar-track"><div class="smbar-fill hi" style="width:78%"></div></div><span class="smbar-val">78</span></div>
+            <div class="smbar"><span class="smbar-name">Maths</span><div class="smbar-track"><div class="smbar-fill" style="width:52%"></div></div><span class="smbar-val">52</span></div>
+            <div class="smbar"><span class="smbar-name">Physics</span><div class="smbar-track"><div class="smbar-fill hi" style="width:71%"></div></div><span class="smbar-val">71</span></div>
+            <div class="smbar"><span class="smbar-name">Chemistry</span><div class="smbar-track"><div class="smbar-fill hi" style="width:67%"></div></div><span class="smbar-val">67</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="feat">
+        <div class="feat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Topic diagnostic</h3>
+        <p>One short sitting maps your strong and weak areas. Pause it and return later — it picks up where you left off.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3C7 3 3 7 3 12s4 9 9 9 9-4 9-9-4-9-9-9z" stroke="currentColor" stroke-width="2"/><path d="M12 8v4l2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Ask PAT</h3>
+        <p>Every question you get wrong gets a clear worked explanation from PAT — the AI that knows the JAMB syllabus.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Weekly report</h3>
+        <p>What improved, what slipped, and which topics to hit next week. A coach in your pocket every Sunday.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 10L11 14l-2-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <h3>Topic drills</h3>
+        <p>Filter questions by subject, topic and accuracy, and drill until a weak spot becomes solid.</p>
+      </article>
+
+      <article class="feat">
+        <div class="feat-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 3h14a1 1 0 0 1 1 1v16l-4-2-4 2-4-2-4 2V4a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="2"/></svg>
+        </div>
+        <h3>Study scheduler</h3>
+        <p>Plan sessions for each subject, and get a reminder 30 minutes before each one. Stay consistent.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── CBT DEMO ───────────────────────────────────────────────────────────────── -->
+<section class="demo-band section" id="demo">
+  <div class="wrap demo-layout">
+    <div class="demo-copy">
+      <h2>Try a question right now.</h2>
+      <p>This is exactly how questions look in the app — tabs for each subject, a countdown, and PAT ready to explain after you answer.</p>
+      <ul class="demo-points">
+        <li>
+          <span class="demo-bullet">
+            <svg viewBox="0 0 11 11" aria-hidden="true"><path d="M2 5.5l3 3 4-5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          </span>
+          <span>Switch subjects using the tabs at the top</span>
+        </li>
+        <li>
+          <span class="demo-bullet">
+            <svg viewBox="0 0 11 11" aria-hidden="true"><path d="M2 5.5l3 3 4-5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          </span>
+          <span>Pick your answer — PAT explains it immediately</span>
+        </li>
+        <li>
+          <span class="demo-bullet">
+            <svg viewBox="0 0 11 11" aria-hidden="true"><path d="M2 5.5l3 3 4-5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          </span>
+          <span>The app has hundreds of questions across all UTME subjects</span>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="cbt" aria-label="Try a sample UTME question">
+        <div class="cbt-top">
+          <div class="cbt-tabs" role="group" aria-label="Subject" id="cbt-tabs"></div>
+          <div class="cbt-timer" aria-label="Time remaining">
+            <span class="cbt-timer-dot" aria-hidden="true"></span>
+            <span id="timer">01:58:47</span>
+          </div>
+        </div>
+        <div class="cbt-body">
+          <p class="cbt-qmeta" id="qmeta">MATHS · QUESTION 12 OF 180</p>
+          <p class="cbt-qtext" id="qtext"></p>
+          <div class="opts" id="opts" role="group" aria-label="Answer options"></div>
+          <div class="pat" id="pat" hidden>
+            <div class="pat-head"><span class="pat-badge">P</span> PAT explains</div>
+            <p id="pat-text"></p>
+          </div>
+        </div>
+        <div class="cbt-foot">
+          <div class="qgrid" id="grid-nav" aria-hidden="true"></div>
+          <button class="btn-next" id="next" type="button">Next →</button>
+        </div>
+      </div>
+      <p class="cbt-caption">Pick an answer — PAT steps in right away.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ──────────────────────────────────────────────────────────── -->
+<section class="how-band section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Start free. Activate when you're ready.</h2>
+      <p>Download the app and use everything for 8 days before spending a naira.</p>
+    </div>
+    <ol class="steps" aria-label="Steps to get started">
+      <li class="step">
+        <div class="step-num"></div>
+        <h3>Install the app</h3>
+        <p>Download Scholars&amp;Tutors from Google Play. Sign up with your email or phone number.</p>
+      </li>
+      <li class="step">
+        <div class="step-num"></div>
+        <h3>Use it free for 8 days</h3>
+        <p>Every feature is open — mock exams, diagnostic, PAT, video lessons. Try it all.</p>
+      </li>
+      <li class="step key-step">
+        <div class="step-num"></div>
+        <h3>Activate here</h3>
+        <p>Pay ₦2,000 on this page by transfer, card, USSD or OPay. Use the email or phone you signed up with.</p>
+      </li>
+      <li class="step">
+        <div class="step-num"></div>
+        <h3>Keep going</h3>
+        <p>Your account unlocks automatically. Reopen the app and everything's ready for a full year.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ── PRICING ───────────────────────────────────────────────────────────────── -->
+<section class="pricing-band section" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>One payment. A full year.</h2>
+      <p>No subscriptions, no auto-renewal. Pay once and you're covered until exam day and beyond. Parents and sponsors can pay on a student's behalf.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="plan-card">
         <div>
-          <p class="eyebrow" style="margin-bottom:10px;">Schools, tutorial centres and sponsors</p>
-          <h2>Getting access for a whole class?</h2>
-          <p>We activate groups in one go: a secondary school's SS3 set, a tutorial centre's intake, or students sponsored by a church, company or government programme. Send us the number of students and we'll reply with group pricing and a simple sign-up process.</p>
-        </div>
-        <div class="contact">
-          <div class="contact-row">
-            <code id="email-text">jamb@euritechnologies.com</code>
-            <button class="copy" type="button" data-copy="email-text">Copy</button>
+          <div class="plan-badge">Full access</div>
+          <div class="plan-price" style="margin-top:16px;">
+            <span class="plan-price-big">₦2,000</span>
+            <span class="plan-price-per">per year</span>
           </div>
-          <p class="muted" style="font-size:13.5px;">Include your school or organisation name and your state.</p>
         </div>
+        <ul class="plan-list">
+          <li>Unlimited CBT mock exams in full UTME format</li>
+          <li>Complete question bank with explanations</li>
+          <li>Ask PAT on every question you get wrong</li>
+          <li>Weekly progress report and study reminders</li>
+          <li>Video lessons for every supported topic</li>
+        </ul>
+        <div>
+          <div class="plan-methods" aria-label="Payment methods">
+            <span class="plan-method">Bank transfer</span>
+            <span class="plan-method">Debit card</span>
+            <span class="plan-method">USSD</span>
+            <span class="plan-method">Bank</span>
+            <span class="plan-method">OPay</span>
+          </div>
+        </div>
+        <p class="plan-note">One payment, no automatic renewal. If you activate before your current year ends, the extra year is added on top.</p>
+      </div>
+
+      <form class="activate-card" id="activate-form" novalidate>
+        <div>
+          <h3>Activate an account</h3>
+          <p class="sub">Install the app and sign up first, then come back here to pay.</p>
+        </div>
+
+        <div class="field">
+          <label for="student-id">Student's email or phone number</label>
+          <input id="student-id" name="identifier" type="text" inputmode="email" autocomplete="username" placeholder="ada@gmail.com or 0803 123 4567" required>
+          <span class="hint">Use exactly what was used to sign up in the app.</span>
+        </div>
+
+        <label class="check-label" for="for-someone">
+          <input id="for-someone" type="checkbox">
+          <span>I'm paying for someone else (parent, guardian or sponsor)</span>
+        </label>
+
+        <div class="field" id="payer-field" hidden>
+          <label for="payer-email">Your email for the receipt</label>
+          <input id="payer-email" name="payerEmail" type="email" autocomplete="email" placeholder="you@example.com">
+          <span class="hint">The receipt comes here. The student's account still gets full access.</span>
+        </div>
+
+        <div class="form-msg" id="form-msg" role="alert" hidden></div>
+
+        <button class="btn-pay" id="pay-btn" type="submit">Pay ₦2,000 securely</button>
+        <p class="secure-row">
+          <svg width="13" height="15" viewBox="0 0 13 15" aria-hidden="true"><rect x="1" y="7" width="11" height="7" rx="2" fill="currentColor"/><path d="M3.5 7V5A3 3 0 0 1 9.5 5v2" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          Handled by Paystack. Your account unlocks automatically, usually within a minute.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCHOOLS ────────────────────────────────────────────────────────────────── -->
+<section class="schools-band section" id="schools" style="padding-top:0;">
+  <div class="wrap">
+    <div class="schools-inner">
+      <div>
+        <p style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-dk);margin-bottom:10px;">Schools &amp; bulk access</p>
+        <h2>Activating a whole class?</h2>
+        <p>We handle SS3 sets, tutorial centres, and sponsored cohorts in one go. Send us the number of students and we'll come back with group pricing and a simple process.</p>
+      </div>
+      <div>
+        <div class="contact-row">
+          <code id="email-text">jamb@euritechnologies.com</code>
+          <button class="btn-copy" type="button" data-copy="email-text">Copy</button>
+        </div>
+        <p class="contact-hint">Include your school or organisation name and your state.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section steps-band" id="faq">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">Questions</p>
-        <h2>Before you pay</h2>
-      </div>
-      <div class="faq">
-        <details>
-          <summary>Do I need to install the app before paying?</summary>
-          <p>Yes. Payment activates an existing account, so the student needs to download the app and sign up first. Then enter the same email or phone number on this page.</p>
-        </details>
-        <details>
-          <summary>I've paid. How do I unlock the app?</summary>
-          <p>You don't need a code. Close and reopen the app, or log out and back in, and full access will be there. It usually takes under a minute after payment.</p>
-        </details>
-        <details>
-          <summary>My payment went through but the app is still locked.</summary>
-          <p>Check that you paid with the exact email or phone number the student signed up with. If it still hasn't unlocked after 10 minutes, email jamb@euritechnologies.com with your Paystack receipt and we'll sort it out.</p>
-        </details>
-        <details>
-          <summary>Will I be charged again automatically?</summary>
-          <p>No. ₦2,000 is a one-off payment for 12 months. Nothing renews unless you choose to activate again.</p>
-        </details>
-        <details>
-          <summary>Can a parent or sponsor pay for me?</summary>
-          <p>Yes. Tick "I'm paying for someone else", enter the student's email or phone number, and the payer's email for the receipt. Anyone can pay from anywhere.</p>
-        </details>
-        <details>
-          <summary>Which payment methods can I use?</summary>
-          <p>Bank transfer, debit card, USSD, direct bank payment and OPay. You don't need a card: transfer and USSD work from any Nigerian bank account.</p>
-        </details>
-        <details>
-          <summary>Which subjects are covered?</summary>
-          <p>Use of English and the most common UTME subject combinations. More subjects are being added; the app shows the full list when you choose your subjects at sign-up.</p>
-        </details>
-      </div>
+<!-- ── FAQ ───────────────────────────────────────────────────────────────────── -->
+<section class="faq-band section" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Before you pay.</h2>
     </div>
-  </section>
+    <div class="faq" role="list">
+      <details role="listitem">
+        <summary>Do I install the app before paying?
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p>Yes. Payment activates an existing account — the student needs to download and sign up first. Then enter that same email or phone here.</p>
+      </details>
+      <details role="listitem">
+        <summary>I've paid. How does the app unlock?
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p>No code needed. Close and reopen the app, or log out and back in. Full access is there, usually under a minute after payment.</p>
+      </details>
+      <details role="listitem">
+        <summary>Payment went through but the app is still locked.
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p>Check that the email or phone used on this page is the exact one the student signed up with in the app. If it's still locked after 10 minutes, email jamb@euritechnologies.com with the Paystack receipt and we'll fix it.</p>
+      </details>
+      <details role="listitem">
+        <summary>Will I be charged again automatically?
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p>No. ₦2,000 is a one-off payment for 12 months. Nothing renews unless you choose to activate again.</p>
+      </details>
+      <details role="listitem">
+        <summary>Can a parent or sponsor pay for me?
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p>Yes. Tick "paying for someone else", enter the student's email or phone number, and your own email for the receipt. Anyone can pay from anywhere.</p>
+      </details>
+      <details role="listitem">
+        <summary>Which payment methods work?
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p>Bank transfer, debit card, USSD, direct bank payment and OPay. You don't need a card — transfer and USSD work from any Nigerian bank account.</p>
+      </details>
+      <details role="listitem">
+        <summary>Which subjects are covered?
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+        </summary>
+        <p>Use of English and the most common UTME combinations. More subjects are being added. The app shows the full list when you choose your subjects at sign-up.</p>
+      </details>
+    </div>
+  </div>
+</section>
 
-  <section class="section">
-    <div class="wrap final">
-      <p class="eyebrow">Your 8 days start when you sign up</p>
+<!-- ── FINAL CTA ──────────────────────────────────────────────────────────────── -->
+<section class="final-band">
+  <div class="wrap">
+    <div class="final-inner">
+      <p style="font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(245,200,66,.6);">8-day free trial · No card needed</p>
       <h2>Sit your first mock exam today.</h2>
-      <div class="cta-row" style="justify-content:center;">
-        <a class="btn btn-play js-play" href="#" target="_blank" rel="noopener">
-          <svg width="22" height="24" viewBox="0 0 22 24" aria-hidden="true"><path d="M2 1.5 L20 12 L2 22.5 Z" fill="currentColor"/></svg>
+      <div class="final-btns">
+        <a class="btn-primary js-play" href="#" target="_blank" rel="noopener">
+          <svg width="18" height="20" viewBox="0 0 20 22" aria-hidden="true"><path d="M2 1.3L18.5 11 2 20.7z" fill="currentColor"/></svg>
           <span><small>Get it on</small>Google Play</span>
         </a>
-        <a class="btn btn-ghost" href="#pricing">Activate full access</a>
+        <a class="btn-ghost-outline" href="#pricing">Activate full access</a>
       </div>
     </div>
-  </section>
-</main>
+  </div>
+</section>
 
-<footer class="foot">
-  <div class="wrap foot-row">
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="wrap footer-row">
     <p>© <span id="year">2026</span> Euri Technologies, Abuja. Scholars&amp;Tutors is not affiliated with JAMB.</p>
-    <nav class="foot-links" aria-label="Footer">
+    <nav class="footer-links" aria-label="Footer links">
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
       <a href="/terms">Terms</a>
@@ -698,10 +1617,10 @@ p { margin: 0; }
 
 <script>
 (function () {
-  // ---- Configuration: edit these for the live site ----
+  // ─── CONFIG ────────────────────────────────────────────────────────────────
   var CONFIG = {
     API_BASE: "https://api.euritechnologies.com",
-    // Replace with the app's Play Store listing once published, e.g.
+    // Replace with the real Play Store URL once the app is published, e.g.
     // https://play.google.com/store/apps/details?id=com.euritechnologies.scholarstutors
     PLAY_URL: "https://play.google.com/store/search?q=Scholars%26Tutors&c=apps",
     PRICE_NAIRA: 2000
@@ -710,77 +1629,83 @@ p { margin: 0; }
   document.getElementById("year").textContent = new Date().getFullYear();
   document.querySelectorAll(".js-play").forEach(function (a) { a.href = CONFIG.PLAY_URL; });
 
-  // ---- Sample CBT console ----
+  // ─── SAMPLE CBT QUESTIONS ──────────────────────────────────────────────────
   var QUESTIONS = [
     {
-      subject: "Mathematics", no: 12,
+      subject: "Maths", no: 12,
       text: "If log<sub>10</sub>2 = 0.3010, find the value of log<sub>10</sub>8.",
       options: ["0.6020", "0.9030", "2.4080", "0.0903"], answer: 1,
-      explain: "8 is 2³, so log 8 = 3 × log 2 = 3 × 0.3010 = 0.9030. Option C multiplies by 8 instead of 3; the power, not the number, is what you multiply by."
+      explain: "8 is 2³, so log 8 = 3 × log 2 = 3 × 0.3010 = 0.9030. Option C multiplies by 8 instead of 3 — the power is what you multiply by, not the number."
     },
     {
       subject: "English", no: 37,
       text: "Choose the option nearest in meaning to the underlined word: The manager's reply was <u>terse</u>.",
       options: ["brief", "rude", "lengthy", "cheerful"], answer: 0,
-      explain: "Terse means using very few words. A terse reply can sound rude, which is why B is tempting, but the word itself describes length, not tone."
+      explain: "Terse means using very few words. A terse reply can sound rude — which is why B is tempting — but the word itself describes length, not tone."
     },
     {
       subject: "Physics", no: 104,
       text: "A car starts from rest and accelerates uniformly to 20 m/s in 5 s. What is its acceleration?",
       options: ["4 m/s²", "100 m/s²", "0.25 m/s²", "15 m/s²"], answer: 0,
-      explain: "Acceleration = change in velocity ÷ time = (20 − 0) ÷ 5 = 4 m/s². Option B multiplies instead of dividing, a common slip under time pressure."
+      explain: "Acceleration = (change in velocity) ÷ time = (20 − 0) ÷ 5 = 4 m/s². Option B multiplies instead of dividing — a common slip under exam pressure."
     },
     {
       subject: "Biology", no: 151,
       text: "Which organelle is the main site of aerobic respiration in a cell?",
       options: ["Ribosome", "Chloroplast", "Mitochondrion", "Golgi body"], answer: 2,
-      explain: "Aerobic respiration releases energy in the mitochondrion. Chloroplasts carry out photosynthesis, which is easy to mix up because both involve energy."
+      explain: "Aerobic respiration happens in the mitochondrion. Chloroplasts handle photosynthesis — easy to mix up because both involve energy conversion."
     }
   ];
+
   var current = 0;
-  var tabs = document.getElementById("cbt-tabs");
-  var qmeta = document.getElementById("qmeta");
-  var qtext = document.getElementById("qtext");
-  var opts = document.getElementById("opts");
-  var pat = document.getElementById("pat");
-  var patText = document.getElementById("pat-text");
-  var gridNav = document.getElementById("grid-nav");
   var answered = {};
+  var tabsEl  = document.getElementById("cbt-tabs");
+  var qmeta   = document.getElementById("qmeta");
+  var qtext   = document.getElementById("qtext");
+  var optsEl  = document.getElementById("opts");
+  var patEl   = document.getElementById("pat");
+  var patText = document.getElementById("pat-text");
+  var gridEl  = document.getElementById("grid-nav");
 
   QUESTIONS.forEach(function (q, i) {
     var b = document.createElement("button");
-    b.type = "button"; b.className = "cbt-tab"; b.textContent = q.subject;
+    b.type = "button";
+    b.className = "cbt-tab";
+    b.textContent = q.subject;
     b.addEventListener("click", function () { show(i); });
-    tabs.appendChild(b);
+    tabsEl.appendChild(b);
   });
 
   function renderGrid(q) {
-    gridNav.innerHTML = "";
-    var start = Math.max(1, q.no - 9);
-    for (var n = start; n < start + 14; n++) {
+    gridEl.innerHTML = "";
+    var start = Math.max(1, q.no - 8);
+    for (var n = start; n < start + 13; n++) {
       var cell = document.createElement("i");
       cell.textContent = n;
-      if (n === q.no) cell.className = "now";
-      else if (n < q.no) cell.className = "done";
-      gridNav.appendChild(cell);
+      if (n === q.no) cell.className = "qg-now";
+      else if (n < q.no) cell.className = "qg-done";
+      gridEl.appendChild(cell);
     }
   }
 
   function show(i) {
     current = i;
     var q = QUESTIONS[i];
-    Array.prototype.forEach.call(tabs.children, function (t, j) { t.setAttribute("aria-pressed", String(j === i)); });
+    Array.prototype.forEach.call(tabsEl.children, function (t, j) {
+      t.setAttribute("aria-pressed", String(j === i));
+    });
     qmeta.textContent = q.subject.toUpperCase() + " · QUESTION " + q.no + " OF 180";
     qtext.innerHTML = q.text;
-    opts.innerHTML = "";
-    pat.hidden = true;
+    optsEl.innerHTML = "";
+    patEl.hidden = true;
     q.options.forEach(function (o, k) {
       var b = document.createElement("button");
-      b.type = "button"; b.className = "opt";
+      b.type = "button";
+      b.className = "opt";
       b.innerHTML = '<span class="opt-key">' + "ABCD"[k] + "</span><span></span>";
       b.lastChild.textContent = o;
       b.addEventListener("click", function () { choose(k); });
-      opts.appendChild(b);
+      optsEl.appendChild(b);
     });
     renderGrid(q);
     if (answered[i] !== undefined) choose(answered[i]);
@@ -789,93 +1714,117 @@ p { margin: 0; }
   function choose(k) {
     var q = QUESTIONS[current];
     answered[current] = k;
-    Array.prototype.forEach.call(opts.children, function (b, j) {
+    Array.prototype.forEach.call(optsEl.children, function (b, j) {
       b.disabled = true;
       if (j === q.answer) b.classList.add("is-right");
       else if (j === k) b.classList.add("is-wrong");
     });
-    patText.textContent = (k === q.answer ? "Correct. " : "Not quite. The answer is " + "ABCD"[q.answer] + ". ") + q.explain;
-    pat.hidden = false;
+    patText.textContent =
+      (k === q.answer ? "Correct. " : "Not quite — the answer is " + "ABCD"[q.answer] + ". ") + q.explain;
+    patEl.hidden = false;
   }
 
-  document.getElementById("next").addEventListener("click", function () { show((current + 1) % QUESTIONS.length); });
+  document.getElementById("next").addEventListener("click", function () {
+    show((current + 1) % QUESTIONS.length);
+  });
   show(0);
 
-  // Countdown in CBT style
+  // Countdown timer
   var remaining = 1 * 3600 + 58 * 60 + 47;
-  var timer = document.getElementById("timer");
+  var timerEl = document.getElementById("timer");
   setInterval(function () {
     remaining = remaining > 0 ? remaining - 1 : 7200;
-    var h = Math.floor(remaining / 3600), m = Math.floor(remaining % 3600 / 60), s = remaining % 60;
-    timer.textContent = [h, m, s].map(function (n) { return String(n).padStart(2, "0"); }).join(":");
+    var h = Math.floor(remaining / 3600);
+    var m = Math.floor((remaining % 3600) / 60);
+    var s = remaining % 60;
+    timerEl.textContent = [h, m, s].map(function (n) { return String(n).padStart(2, "0"); }).join(":");
   }, 1000);
 
-  // ---- Copy buttons ----
+  // ─── COPY BUTTONS ──────────────────────────────────────────────────────────
   document.querySelectorAll("[data-copy]").forEach(function (btn) {
     btn.addEventListener("click", function () {
       var el = document.getElementById(btn.getAttribute("data-copy"));
       var text = el.textContent.trim();
-      var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1600); };
-      var fallback = function () {
-        var r = document.createRange(); r.selectNodeContents(el);
-        var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
-        btn.textContent = "Selected";
-        setTimeout(function () { btn.textContent = "Copy"; }, 1600);
-      };
+      var restore = function () { setTimeout(function () { btn.textContent = "Copy"; }, 1600); };
       try {
-        navigator.clipboard.writeText(text).then(done, fallback);
-      } catch (e) { fallback(); }
+        navigator.clipboard.writeText(text).then(
+          function () { btn.textContent = "Copied"; restore(); },
+          function () { fallbackCopy(el, btn, restore); }
+        );
+      } catch (e) { fallbackCopy(el, btn, restore); }
     });
   });
+  function fallbackCopy(el, btn, restore) {
+    var r = document.createRange();
+    r.selectNodeContents(el);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(r);
+    btn.textContent = "Selected";
+    restore();
+  }
 
-  // ---- Activation form ----
-  var form = document.getElementById("activate-form");
-  var idInput = document.getElementById("student-id");
+  // ─── ACTIVATION FORM ───────────────────────────────────────────────────────
+  var form       = document.getElementById("activate-form");
+  var idInput    = document.getElementById("student-id");
   var forSomeone = document.getElementById("for-someone");
   var payerField = document.getElementById("payer-field");
   var payerInput = document.getElementById("payer-email");
-  var msg = document.getElementById("form-msg");
-  var payBtn = document.getElementById("pay-btn");
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var msgEl      = document.getElementById("form-msg");
+  var payBtn     = document.getElementById("pay-btn");
+  var EMAIL_RE   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  forSomeone.addEventListener("change", function () { payerField.hidden = !forSomeone.checked; });
+  forSomeone.addEventListener("change", function () {
+    payerField.hidden = !forSomeone.checked;
+  });
 
   function looksLikePhone(v) {
     var d = v.replace(/\D/g, "");
     return d.length === 11 || (d.length === 13 && d.indexOf("234") === 0) || d.length === 10;
   }
   function showMsg(kind, text) {
-    msg.hidden = false; msg.className = "form-msg " + kind; msg.textContent = text;
+    msgEl.hidden = false;
+    msgEl.className = "form-msg " + kind;
+    msgEl.textContent = text;
   }
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-    msg.hidden = true;
-    idInput.removeAttribute("aria-invalid"); payerInput.removeAttribute("aria-invalid");
+    msgEl.hidden = true;
+    idInput.removeAttribute("aria-invalid");
+    payerInput.removeAttribute("aria-invalid");
 
     var identifier = idInput.value.trim();
     var isEmail = EMAIL_RE.test(identifier);
     if (!identifier || (!isEmail && !looksLikePhone(identifier))) {
-      idInput.setAttribute("aria-invalid", "true"); idInput.focus();
+      idInput.setAttribute("aria-invalid", "true");
+      idInput.focus();
       showMsg("err", "Enter the email address or 11-digit phone number the student signed up with.");
       return;
     }
     var payerEmail = forSomeone.checked ? payerInput.value.trim() : (isEmail ? identifier : "");
     if (forSomeone.checked && !EMAIL_RE.test(payerEmail)) {
-      payerInput.setAttribute("aria-invalid", "true"); payerInput.focus();
+      payerInput.setAttribute("aria-invalid", "true");
+      payerInput.focus();
       showMsg("err", "Enter a valid email address for the receipt.");
       return;
     }
 
-    payBtn.disabled = true; payBtn.textContent = "Opening secure checkout…";
+    payBtn.disabled = true;
+    payBtn.textContent = "Opening secure checkout…";
+
     fetch(CONFIG.API_BASE + "/api/payments/initialize", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ identifier: identifier, payerEmail: payerEmail || undefined })
     })
-      .then(function (r) { return r.json().then(function (body) { return { ok: r.ok, body: body }; }); })
+      .then(function (r) {
+        return r.json().then(function (body) { return { ok: r.ok, body: body }; });
+      })
       .then(function (res) {
-        if (!res.ok || !res.body.authorizationUrl) throw new Error(res.body.message || "We couldn't start the payment. Please try again.");
+        if (!res.ok || !res.body.authorizationUrl) {
+          throw new Error(res.body.message || "We couldn't start the payment. Please try again.");
+        }
         showMsg("ok", "Found " + res.body.studentName + "'s account. Taking you to Paystack…");
         window.location.href = res.body.authorizationUrl;
       })
@@ -884,53 +1833,56 @@ p { margin: 0; }
           ? "We couldn't reach the payment server. Check your internet connection and try again."
           : err.message;
         showMsg("err", text);
-        payBtn.disabled = false; payBtn.textContent = "Pay ₦" + CONFIG.PRICE_NAIRA.toLocaleString("en-NG") + " securely";
+        payBtn.disabled = false;
+        payBtn.textContent = "Pay ₦" + CONFIG.PRICE_NAIRA.toLocaleString("en-NG") + " securely";
       });
   });
 
-  // ---- Returning from Paystack (?reference=...) ----
+  // ─── PAYSTACK RETURN ───────────────────────────────────────────────────────
   var params;
   try { params = new URLSearchParams(window.location.search); } catch (e) { params = null; }
   var reference = params && (params.get("reference") || params.get("trxref"));
   if (reference) {
-    var panel = document.getElementById("return");
-    var card = document.getElementById("return-card");
-    var title = document.getElementById("return-title");
-    var text = document.getElementById("return-text");
+    var panel  = document.getElementById("return");
+    var card   = document.getElementById("return-card");
+    var rTitle = document.getElementById("return-title");
+    var rText  = document.getElementById("return-text");
     panel.hidden = false;
-
+    panel.scrollIntoView({ behavior: "smooth", block: "center" });
+    card.dataset.state = "checking";
     var attempts = 0;
-    var check = function () {
+    function poll() {
       attempts++;
       fetch(CONFIG.API_BASE + "/api/payments/verify/" + encodeURIComponent(reference))
         .then(function (r) { return r.json(); })
         .then(function (data) {
           if (data.status === "success") {
-            var until = new Date(data.expiresAt).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" });
             card.dataset.state = "success";
-            title.textContent = data.studentName + "'s account is active";
-            text.textContent = "Full access until " + until + ". Open Scholars&Tutors and log in, or close and reopen the app if it's already open.";
+            rTitle.textContent = (data.studentName || "The account") + " is now active.";
+            rText.textContent  = "Full access is unlocked until " + (data.expiresAt
+              ? new Date(data.expiresAt).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" })
+              : "next year") + ". Reopen the app and everything will be there.";
           } else if (data.status === "pending" && attempts < 6) {
-            setTimeout(check, 4000);
-          } else if (data.status === "pending") {
-            card.dataset.state = "checking";
-            title.textContent = "Your payment is still processing";
-            text.textContent = "Bank transfers can take a few minutes. The account will unlock on its own once it clears. You can close this page.";
+            setTimeout(poll, 4000);
           } else {
             card.dataset.state = "failed";
-            title.textContent = "This payment didn't go through";
-            text.textContent = "You haven't been charged. Scroll down to try again, or email jamb@euritechnologies.com if money left your account.";
+            rTitle.textContent = "Payment not confirmed yet.";
+            rText.textContent  = "If money left your account, email jamb@euritechnologies.com with your Paystack receipt and we'll activate the account manually.";
           }
         })
         .catch(function () {
-          card.dataset.state = "checking";
-          title.textContent = "We couldn't confirm the payment yet";
-          text.textContent = "If you completed payment, the account will still unlock automatically. Reference: " + reference;
+          if (attempts < 6) { setTimeout(poll, 4000); }
+          else {
+            card.dataset.state = "failed";
+            rTitle.textContent = "Couldn't confirm your payment.";
+            rText.textContent  = "Email jamb@euritechnologies.com with your Paystack receipt and we'll sort it out.";
+          }
         });
-    };
-    check();
+    }
+    poll();
   }
-})();
+}());
 </script>
+
 </body>
 </html>
